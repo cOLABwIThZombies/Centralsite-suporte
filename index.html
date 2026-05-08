@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abrir Chamado — Suporte</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-900: #042C53;
+      --blue-800: #0C447C;
+      --blue-600: #185FA5;
+      --blue-400: #378ADD;
+      --blue-200: #85B7EB;
+      --blue-100: #B5D4F4;
+      --blue-50:  #E6F1FB;
+      --white: #ffffff;
+      --gray-50: #f7f9fc;
+      --gray-100: #eaf1f9;
+      --gray-200: #d0dff0;
+      --gray-500: #5a7a99;
+      --gray-700: #2d4a66;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --font: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--blue-50);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .topbar {
+      background: var(--blue-800);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar i { color: var(--blue-100); font-size: 22px; }
+    .topbar span { color: var(--white); font-size: 16px; font-weight: 500; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%);
+      padding: 3rem 2rem 4rem;
+      text-align: center;
+      color: var(--white);
+    }
+    .hero h1 { font-size: 26px; font-weight: 500; margin-bottom: 0.5rem; }
+    .hero p  { font-size: 15px; opacity: 0.85; max-width: 480px; margin: 0 auto; }
+
+    /* Card container */
+    .card-wrap {
+      max-width: 620px;
+      margin: -2rem auto 3rem;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 4px 24px rgba(4,44,83,0.10);
+      padding: 2rem;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--blue-800);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--gray-100);
+      padding-bottom: 1rem;
+    }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input, select, textarea {
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--gray-700);
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue-400);
+      box-shadow: 0 0 0 3px rgba(55,138,221,0.15);
+      background: var(--white);
+    }
+    input.err, textarea.err { border-color: #e24b4a; }
+    textarea { resize: vertical; min-height: 110px; }
+
+    .form-err {
+      font-size: 12px;
+      color: #a32d2d;
+      display: none;
+      margin-top: 2px;
+    }
+
+    /* Priority selector */
+    .prio-group { display: flex; gap: 8px; }
+    .prio-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      background: var(--gray-50);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      text-align: center;
+      transition: all 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .prio-btn i { font-size: 18px; }
+    .prio-btn:hover { border-color: var(--blue-200); }
+    .prio-btn.selected-baixa  { background: #EAF3DE; border-color: #639922; color: #3B6D11; }
+    .prio-btn.selected-media  { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); }
+    .prio-btn.selected-alta   { background: #FAEEDA; border-color: #BA7517; color: #633806; }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      margin-top: 1.5rem;
+      background: var(--blue-600);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-submit:hover { background: var(--blue-800); }
+    .btn-submit:active { transform: scale(0.99); }
+
+    /* Success state */
+    .success-card {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      display: none;
+    }
+    .success-icon {
+      width: 64px; height: 64px;
+      background: #EAF3DE;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .success-icon i { font-size: 32px; color: #3B6D11; }
+    .success-card h2 { font-size: 18px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.5rem; }
+    .success-card p { font-size: 14px; color: var(--gray-500); margin-bottom: 1.5rem; }
+    .ticket-num { font-size: 13px; background: var(--blue-50); color: var(--blue-800); border-radius: var(--radius-md); padding: 10px 16px; display: inline-block; font-weight: 500; margin-bottom: 1.5rem; }
+    .btn-new {
+      background: none;
+      border: 1.5px solid var(--blue-400);
+      color: var(--blue-600);
+      border-radius: var(--radius-md);
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .btn-new:hover { background: var(--blue-50); }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    @media (max-width: 540px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      .hero { padding: 2rem 1rem 3rem; }
+      .hero h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <i class="ti ti-headset"></i>
+  <span>Central de Suporte</span>
+</div>
+
+<div class="hero">
+  <h1>Como podemos te ajudar?</h1>
+  <p>Preencha o formulário abaixo e nossa equipe entrará em contato o mais breve possível.</p>
+</div>
+
+<div class="card-wrap">
+  <div class="card">
+
+    <!-- Form -->
+    <div id="form-section">
+      <div class="card-title">
+        <i class="ti ti-ticket" style="font-size:18px;color:var(--blue-400)"></i>
+        Abrir novo chamado
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Seu nome *</label>
+          <input type="text" id="f-nome" placeholder="João Silva" />
+          <span class="form-err" id="err-nome">Campo obrigatório</span>
+        </div>
+        <div class="form-group">
+          <label>E-mail *</label>
+          <input type="email" id="f-email" placeholder="joao@empresa.com" />
+          <span class="form-err" id="err-email">E-mail inválido</span>
+        </div>
+        <div class="form-group">
+          <label>Departamento</label>
+          <input type="text" id="f-dept" placeholder="Ex: TI, RH, Financeiro" />
+        </div>
+        <div class="form-group">
+          <label>Prioridade</label>
+          <div class="prio-group">
+            <button class="prio-btn" id="pb-baixa" onclick="setPrio('baixa')">
+              <i class="ti ti-arrow-down"></i>Baixa
+            </button>
+            <button class="prio-btn selected-media" id="pb-media" onclick="setPrio('media')">
+              <i class="ti ti-minus"></i>Média
+            </button>
+            <button class="prio-btn" id="pb-alta" onclick="setPrio('alta')">
+              <i class="ti ti-arrow-up"></i>Alta
+            </button>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Descrição do problema *</label>
+          <textarea id="f-desc" placeholder="Descreva o problema com o máximo de detalhes possível..."></textarea>
+          <span class="form-err" id="err-desc">Campo obrigatório</span>
+        </div>
+      </div>
+      <button class="btn-submit" onclick="submitTicket()">
+        <i class="ti ti-send"></i> Enviar chamado
+      </button>
+    </div>
+
+    <!-- Success -->
+    <div class="success-card" id="success-section">
+      <div class="success-icon"><i class="ti ti-check"></i></div>
+      <h2>Chamado enviado!</h2>
+      <p>Nossa equipe recebeu sua solicitação e entrará em contato em breve.</p>
+      <div class="ticket-num" id="ticket-num-display"></div>
+      <br />
+      <button class="btn-new" onclick="resetForm()">Abrir outro chamado</button>
+    </div>
+
+  </div>
+</div>
+
+<footer>Central de Suporte &copy; 2025</footer>
+
+<script>
+  let prioAtual = 'media';
+
+  function setPrio(p) {
+    prioAtual = p;
+    ['baixa','media','alta'].forEach(v => {
+      const btn = document.getElementById('pb-' + v);
+      btn.className = 'prio-btn' + (v === p ? ' selected-' + v : '');
+    });
+  }
+
+  function validate() {
+    let ok = true;
+    const nome  = document.getElementById('f-nome');
+    const email = document.getElementById('f-email');
+    const desc  = document.getElementById('f-desc');
+    [nome, email, desc].forEach(el => el.classList.remove('err'));
+    ['err-nome','err-email','err-desc'].forEach(id => document.getElementById(id).style.display = 'none');
+    if (!nome.value.trim()) { nome.classList.add('err'); document.getElementById('err-nome').style.display = 'block'; ok = false; }
+    if (!email.value.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(email.value)) { email.classList.add('err'); document.getElementById('err-email').style.display = 'block'; ok = false; }
+    if (!desc.value.trim()) { desc.classList.add('err'); document.getElementById('err-desc').style.display = 'block'; ok = false; }
+    return ok;
+  }
+
+  function submitTicket() {
+    if (!validate()) return;
+    const tickets = JSON.parse(localStorage.getItem('suporte_tickets') || '[]');
+    const nextId  = parseInt(localStorage.getItem('suporte_next_id') || '1');
+    const ticket  = {
+      id:     nextId,
+      nome:   document.getElementById('f-nome').value.trim(),
+      email:  document.getElementById('f-email').value.trim(),
+      dept:   document.getElementById('f-dept').value.trim() || '—',
+      prio:   prioAtual,
+      desc:   document.getElementById('f-desc').value.trim(),
+      status: 'aberto',
+      ts:     Date.now()
+    };
+    tickets.push(ticket);
+    localStorage.setItem('suporte_tickets', JSON.stringify(tickets));
+    localStorage.setItem('suporte_next_id', String(nextId + 1));
+    document.getElementById('ticket-num-display').textContent = 'Protocolo #' + String(nextId).padStart(3,'0');
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-section').style.display = 'block';
+  }
+
+  function resetForm() {
+    ['f-nome','f-email','f-dept','f-desc'].forEach(id => document.getElementById(id).value = '');
+    setPrio('media');
+    document.getElementById('form-section').style.display = 'block';
+    document.getElementById('success-section').style.display = 'none';
+  }
+</script>
+</body>
+</html>
