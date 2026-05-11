@@ -7,462 +7,183 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --blue-900: #042C53;
-      --blue-800: #0C447C;
-      --blue-700: #134f8f;
-      --blue-600: #185FA5;
-      --blue-400: #378ADD;
-      --blue-200: #85B7EB;
-      --blue-100: #B5D4F4;
-      --blue-50:  #E6F1FB;
-      --white: #ffffff;
-      --gray-50:  #f6f9fd;
-      --gray-100: #eaf1f9;
-      --gray-200: #d0dff0;
-      --gray-300: #aac3dc;
-      --gray-500: #5a7a99;
-      --gray-700: #2d4a66;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
-      --font: system-ui, -apple-system, sans-serif;
-      --font-mono: 'Courier New', monospace;
+      --blue-900: #042C53; --blue-800: #0C447C; --blue-700: #134f8f;
+      --blue-600: #185FA5; --blue-400: #378ADD; --blue-200: #85B7EB;
+      --blue-100: #B5D4F4; --blue-50: #E6F1FB;
+      --white: #ffffff; --gray-50: #f6f9fd; --gray-100: #eaf1f9;
+      --gray-200: #d0dff0; --gray-300: #aac3dc; --gray-500: #5a7a99; --gray-700: #2d4a66;
+      --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+      --font: system-ui, -apple-system, sans-serif; --font-mono: 'Courier New', monospace;
       --sidebar-w: 220px;
     }
+    body { font-family: var(--font); background: var(--gray-50); color: var(--gray-700); min-height: 100vh; display: flex; }
 
-    body {
-      font-family: var(--font);
-      background: var(--gray-50);
-      color: var(--gray-700);
-      min-height: 100vh;
-      display: flex;
-    }
+    /* Login overlay */
+    .login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 100%); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .login-box { background: var(--white); border-radius: var(--radius-xl); padding: 2.5rem 2rem; width: 340px; box-shadow: 0 8px 40px rgba(4,44,83,0.25); text-align: center; }
+    .login-logo { width: 56px; height: 56px; background: var(--blue-50); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
+    .login-logo i { font-size: 28px; color: var(--blue-600); }
+    .login-box h2 { font-size: 18px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.35rem; }
+    .login-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 1.5rem; }
+    .login-input { width: 100%; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); padding: 11px 14px; font-size: 14px; font-family: var(--font); color: var(--gray-700); background: var(--gray-50); outline: none; text-align: center; letter-spacing: 0.1em; transition: border-color 0.15s; }
+    .login-input:focus { border-color: var(--blue-400); box-shadow: 0 0 0 3px rgba(55,138,221,0.15); background: var(--white); }
+    .login-input.err { border-color: #e24b4a; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    .login-err { font-size: 12px; color: #a32d2d; margin-top: 6px; display: none; }
+    .btn-login { width: 100%; margin-top: 1rem; background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 12px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: background 0.15s; }
+    .btn-login:hover { background: var(--blue-800); }
 
-    /* ── Sidebar ── */
-    .sidebar {
-      width: var(--sidebar-w);
-      min-height: 100vh;
-      background: var(--blue-900);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-    }
-
-    .sidebar-logo {
-      padding: 1.25rem 1.25rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
+    /* Sidebar */
+    .sidebar { width: var(--sidebar-w); min-height: 100vh; background: var(--blue-900); display: flex; flex-direction: column; flex-shrink: 0; position: fixed; top: 0; left: 0; bottom: 0; }
+    .sidebar-logo { padding: 1.25rem 1.25rem 1rem; display: flex; align-items: center; gap: 9px; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .sidebar-logo i { color: var(--blue-100); font-size: 22px; }
     .sidebar-logo span { color: var(--white); font-size: 15px; font-weight: 500; }
-
-    .sidebar-section {
-      padding: 1rem 0.75rem 0.25rem;
-      font-size: 10px;
-      font-weight: 600;
-      color: rgba(181,212,244,0.5);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 1rem;
-      margin: 2px 0.5rem;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 13px;
-      color: rgba(255,255,255,0.65);
-      transition: background 0.12s, color 0.12s;
-      border: none;
-      background: none;
-      width: calc(100% - 1rem);
-      font-family: var(--font);
-      text-align: left;
-    }
+    .sidebar-section { padding: 1rem 0.75rem 0.25rem; font-size: 10px; font-weight: 600; color: rgba(181,212,244,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 1rem; margin: 2px 0.5rem; border-radius: var(--radius-md); cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.65); transition: background 0.12s, color 0.12s; border: none; background: none; width: calc(100% - 1rem); font-family: var(--font); text-align: left; }
     .nav-item i { font-size: 17px; flex-shrink: 0; }
     .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
     .nav-item.active { background: var(--blue-700); color: var(--white); }
+    .nav-badge { margin-left: auto; background: var(--blue-400); color: var(--white); font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
+    .sidebar-footer { margin-top: auto; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: rgba(255,255,255,0.35); text-align: center; }
 
-    .nav-badge {
-      margin-left: auto;
-      background: var(--blue-400);
-      color: var(--white);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 1px 7px;
-      border-radius: 999px;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      text-align: center;
-    }
-
-    /* ── Main ── */
-    .main {
-      margin-left: var(--sidebar-w);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .topbar {
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-200);
-      padding: 0 2rem;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+    /* Main */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
     .topbar-title { font-size: 15px; font-weight: 500; color: var(--blue-800); }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .badge-alert {
-      background: var(--blue-50);
-      color: var(--blue-800);
-      border-radius: var(--radius-md);
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
+    .badge-alert { background: var(--blue-50); color: var(--blue-800); border-radius: var(--radius-md); padding: 4px 10px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
     .content { padding: 1.75rem 2rem; }
 
-    /* ── Stats ── */
+    /* Stats */
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.75rem; }
-    .stat {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .stat { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1rem 1.25rem; }
     .stat-top { display: flex; align-items: center; justify-content: space-between; }
     .stat-icon { width: 34px; height: 34px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
     .stat-icon i { font-size: 18px; }
     .stat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
     .stat-value { font-size: 26px; font-weight: 500; color: var(--blue-800); }
 
-    /* ── Filter bar ── */
-    .filter-bar {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .filter-bar input[type=text] {
-      flex: 1;
-      min-width: 180px;
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 8px 12px;
-      font-size: 13px;
-      font-family: var(--font);
-      color: var(--gray-700);
-      background: var(--gray-50);
-      outline: none;
-    }
+    /* Filter bar */
+    .filter-bar { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .filter-bar input[type=text] { flex: 1; min-width: 180px; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 8px 12px; font-size: 13px; font-family: var(--font); color: var(--gray-700); background: var(--gray-50); outline: none; }
     .filter-bar input[type=text]:focus { border-color: var(--blue-400); }
-    .filter-bar select {
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 8px 10px;
-      font-size: 13px;
-      font-family: var(--font);
-      color: var(--gray-700);
-      background: var(--gray-50);
-      outline: none;
-      cursor: pointer;
-    }
-    .filter-bar select:focus { border-color: var(--blue-400); }
-
+    .filter-bar select { border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 8px 10px; font-size: 13px; font-family: var(--font); color: var(--gray-700); background: var(--gray-50); outline: none; cursor: pointer; }
     .tab-group { display: flex; gap: 6px; }
-    .tab {
-      padding: 6px 14px;
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      cursor: pointer;
-      color: var(--gray-500);
-      background: var(--gray-50);
-      font-family: var(--font);
-      transition: all 0.12s;
-    }
+    .tab { padding: 6px 14px; border: 1px solid var(--gray-200); border-radius: var(--radius-md); font-size: 13px; cursor: pointer; color: var(--gray-500); background: var(--gray-50); font-family: var(--font); transition: all 0.12s; }
     .tab:hover { border-color: var(--blue-200); color: var(--blue-600); }
     .tab.active { background: var(--blue-600); border-color: var(--blue-600); color: var(--white); font-weight: 500; }
 
-    /* ── Ticket table ── */
-    .table-wrap {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    thead tr {
-      background: var(--blue-50);
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    th {
-      padding: 10px 14px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--blue-800);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: left;
-      cursor: pointer;
-      white-space: nowrap;
-      user-select: none;
-    }
-    th:hover { color: var(--blue-600); }
-    th i { font-size: 13px; vertical-align: -2px; margin-left: 3px; }
-
-    td {
-      padding: 12px 14px;
-      font-size: 13px;
-      color: var(--gray-700);
-      border-bottom: 1px solid var(--gray-100);
-      vertical-align: middle;
-    }
-
+    /* Table */
+    .table-wrap { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--blue-50); border-bottom: 1px solid var(--gray-200); }
+    th { padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--blue-800); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; white-space: nowrap; }
+    td { padding: 12px 14px; font-size: 13px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--blue-50); }
-
     .id-cell { font-family: var(--font-mono); font-size: 12px; color: var(--gray-500); }
-
-    .desc-cell { max-width: 260px; }
+    .desc-cell { max-width: 240px; }
     .desc-main { font-weight: 500; color: var(--blue-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .desc-sub  { font-size: 12px; color: var(--gray-500); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* Priority */
-    .prio {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 12px; font-weight: 500;
-      padding: 3px 10px; border-radius: 999px; white-space: nowrap;
-    }
+    .desc-sub { font-size: 12px; color: var(--gray-500); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .prio { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
     .prio-alta  { background: #FAEEDA; color: #633806; }
     .prio-media { background: var(--blue-50); color: var(--blue-800); }
     .prio-baixa { background: #EAF3DE; color: #3B6D11; }
-
-    /* Status select inline */
-    .status-sel {
-      font-size: 12px;
-      border-radius: var(--radius-md);
-      padding: 5px 8px;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      color: var(--gray-700);
-      cursor: pointer;
-      font-family: var(--font);
-      outline: none;
-    }
-    .status-sel:focus { border-color: var(--blue-400); }
-    .status-aberto     { border-left: 3px solid var(--blue-400); }
-    .status-andamento  { border-left: 3px solid #BA7517; }
-    .status-resolvido  { border-left: 3px solid #639922; }
-
-    /* Actions */
-    .btn-detail {
-      background: none;
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 5px 10px;
-      font-size: 12px;
-      color: var(--blue-600);
-      cursor: pointer;
-      font-family: var(--font);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: background 0.12s;
-    }
+    .status-sel { font-size: 12px; border-radius: var(--radius-md); padding: 5px 8px; background: var(--gray-50); border: 1px solid var(--gray-200); color: var(--gray-700); cursor: pointer; font-family: var(--font); outline: none; }
+    .status-aberto    { border-left: 3px solid var(--blue-400); }
+    .status-andamento { border-left: 3px solid #BA7517; }
+    .status-resolvido { border-left: 3px solid #639922; }
+    .btn-detail { background: none; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 5px 10px; font-size: 12px; color: var(--blue-600); cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 4px; transition: background 0.12s; white-space: nowrap; }
     .btn-detail:hover { background: var(--blue-50); border-color: var(--blue-200); }
-
-    /* Empty */
-    .empty-row td {
-      text-align: center;
-      padding: 3.5rem 1rem;
-      color: var(--gray-500);
-    }
+    .attach-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; background: var(--blue-50); color: var(--blue-700); border-radius: 999px; padding: 2px 8px; font-weight: 500; }
+    .empty-row td { text-align: center; padding: 3.5rem 1rem; color: var(--gray-500); }
     .empty-row i { font-size: 32px; display: block; margin-bottom: 0.5rem; color: var(--gray-300); }
 
-    /* ── Modal / Detail panel ── */
-    .overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(4,44,83,0.35);
-      z-index: 100;
-      align-items: flex-start;
-      justify-content: flex-end;
-    }
+    /* Loading row */
+    .loading-row td { text-align: center; padding: 3rem; color: var(--gray-500); }
+    .spinner-blue { width: 24px; height: 24px; border: 3px solid var(--blue-100); border-top-color: var(--blue-600); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 0.5rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Detail panel */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(4,44,83,0.35); z-index: 100; align-items: flex-start; justify-content: flex-end; }
     .overlay.open { display: flex; }
-
-    .detail-panel {
-      background: var(--white);
-      width: 420px;
-      max-width: 100vw;
-      min-height: 100vh;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      animation: slideIn 0.2s ease;
-    }
+    .detail-panel { background: var(--white); width: 460px; max-width: 100vw; min-height: 100vh; display: flex; flex-direction: column; animation: slideIn 0.2s ease; }
     @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-    .panel-header {
-      background: var(--blue-800);
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .panel-header { background: var(--blue-800); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
     .panel-header h2 { font-size: 15px; font-weight: 500; color: var(--white); }
-    .btn-close {
-      background: none; border: none; cursor: pointer;
-      color: rgba(255,255,255,0.7); font-size: 20px;
-      display: flex; align-items: center;
-    }
+    .btn-close { background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 20px; display: flex; align-items: center; }
     .btn-close:hover { color: var(--white); }
-
     .panel-body { padding: 1.5rem; flex: 1; overflow-y: auto; }
-
     .panel-section { margin-bottom: 1.5rem; }
-    .panel-section h3 {
-      font-size: 11px; font-weight: 600;
-      color: var(--blue-400);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--gray-100);
-    }
-
+    .panel-section h3 { font-size: 11px; font-weight: 600; color: var(--blue-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gray-100); }
     .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; font-size: 13px; }
     .info-label { color: var(--gray-500); flex-shrink: 0; margin-right: 12px; }
     .info-value { color: var(--gray-700); font-weight: 500; text-align: right; }
+    .desc-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 12px; font-size: 13px; color: var(--gray-700); line-height: 1.6; }
 
-    .desc-box {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      font-size: 13px;
-      color: var(--gray-700);
-      line-height: 1.6;
-    }
+    /* Attachments grid */
+    .attach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .attach-item { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--gray-200); background: var(--gray-100); position: relative; aspect-ratio: 1; cursor: pointer; transition: transform 0.15s; }
+    .attach-item:hover { transform: scale(1.03); border-color: var(--blue-200); }
+    .attach-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .attach-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .attach-type { position: absolute; top: 4px; left: 4px; background: rgba(4,44,83,0.7); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; }
+    .attach-name { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(4,44,83,0.6); color: white; font-size: 10px; padding: 3px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .attach-empty { font-size: 13px; color: var(--gray-500); display: flex; align-items: center; gap: 6px; padding: 8px 0; }
 
-    /* History timeline */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 200; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
+    .lightbox.open { display: flex; }
+    .lightbox img, .lightbox video { max-width: 90vw; max-height: 80vh; border-radius: var(--radius-md); }
+    .lightbox-close { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+    .lightbox-name { color: rgba(255,255,255,0.7); font-size: 13px; }
+
+    /* Status change */
+    .status-change-wrap { display: flex; gap: 8px; align-items: center; }
+    .status-change-wrap select { flex: 1; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 8px 10px; font-size: 13px; font-family: var(--font); color: var(--gray-700); background: var(--gray-50); outline: none; }
+    .btn-save-status { background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--font); white-space: nowrap; transition: background 0.12s; }
+    .btn-save-status:hover { background: var(--blue-800); }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; }
     .timeline-item { display: flex; gap: 12px; padding-bottom: 1.25rem; position: relative; }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: 14px; top: 28px; bottom: 0;
-      width: 1px;
-      background: var(--gray-200);
-    }
+    .timeline-item::before { content: ''; position: absolute; left: 14px; top: 28px; bottom: 0; width: 1px; background: var(--gray-200); }
     .timeline-item:last-child::before { display: none; }
-    .timeline-dot {
-      width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      font-size: 14px;
-    }
+    .timeline-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
     .dot-aberto    { background: var(--blue-50); color: var(--blue-600); }
     .dot-andamento { background: #FAEEDA; color: #BA7517; }
     .dot-resolvido { background: #EAF3DE; color: #639922; }
-    .dot-criado    { background: var(--gray-100); color: var(--gray-500); }
-
-    .timeline-content { flex: 1; }
+    .dot-default   { background: var(--gray-100); color: var(--gray-500); }
     .timeline-title { font-size: 13px; font-weight: 500; color: var(--gray-700); margin-bottom: 2px; }
     .timeline-time  { font-size: 12px; color: var(--gray-500); }
 
-    /* Status change in panel */
-    .status-change-wrap { display: flex; gap: 8px; align-items: center; }
-    .status-change-wrap select {
-      flex: 1;
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 8px 10px;
-      font-size: 13px;
-      font-family: var(--font);
-      color: var(--gray-700);
-      background: var(--gray-50);
-      outline: none;
-    }
-    .btn-save-status {
-      background: var(--blue-600);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: var(--font);
-      white-space: nowrap;
-      transition: background 0.12s;
-    }
-    .btn-save-status:hover { background: var(--blue-800); }
+    /* Estatísticas */
+    .stat-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .chart-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.5rem; }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-card h3 { font-size: 13px; font-weight: 500; color: var(--blue-800); margin-bottom: 1rem; }
 
     /* Toast */
-    .toast {
-      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-      background: var(--blue-800); color: var(--white);
-      padding: 10px 20px; border-radius: var(--radius-md);
-      font-size: 14px; opacity: 0; pointer-events: none;
-      transition: opacity 0.3s;
-      display: flex; align-items: center; gap: 8px;
-      z-index: 200; white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--blue-800); color: var(--white); padding: 10px 20px; border-radius: var(--radius-md); font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; align-items: center; gap: 8px; z-index: 300; white-space: nowrap; }
     .toast.show { opacity: 1; }
 
-    @media (max-width: 900px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 680px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .content { padding: 1rem; }
-    }
+    @media (max-width: 900px) { .stats { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 680px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 1rem; } }
   </style>
 </head>
 <body>
+
+<!-- Login -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo"><i class="ti ti-lock"></i></div>
+    <h2>Painel de Suporte</h2>
+    <p>Digite a senha para acessar</p>
+    <input type="password" class="login-input" id="login-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    <div class="login-err" id="login-err">Senha incorreta. Tente novamente.</div>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
 
 <!-- Sidebar -->
 <aside class="sidebar">
@@ -485,64 +206,51 @@
   <button class="nav-item" onclick="copyUserLink()">
     <i class="ti ti-link"></i> Copiar link do usuário
   </button>
-  <div class="sidebar-footer">Painel de suporte v1.0</div>
+  <button class="nav-item" onclick="doLogout()">
+    <i class="ti ti-logout"></i> Sair
+  </button>
+  <div class="sidebar-footer">Painel de suporte v2.0</div>
 </aside>
 
 <!-- Main -->
 <div class="main">
   <div class="topbar">
     <span class="topbar-title" id="topbar-title">Fila de chamados</span>
-    <div class="topbar-right">
-      <div class="badge-alert" id="badge-alta">
-        <i class="ti ti-alert-triangle" style="font-size:15px"></i>
-        <span id="badge-alta-txt">0 em alta prioridade</span>
-      </div>
+    <div class="badge-alert" id="badge-alta">
+      <i class="ti ti-alert-triangle" style="font-size:15px"></i>
+      <span id="badge-alta-txt">0 em alta prioridade</span>
     </div>
   </div>
 
   <div class="content">
-
-    <!-- Stats -->
     <div class="stats">
       <div class="stat">
         <div class="stat-top">
-          <div>
-            <div class="stat-label">Total de chamados</div>
-            <div class="stat-value" id="s-total">0</div>
-          </div>
+          <div><div class="stat-label">Total de chamados</div><div class="stat-value" id="s-total">—</div></div>
           <div class="stat-icon" style="background:var(--blue-50)"><i class="ti ti-ticket" style="color:var(--blue-600)"></i></div>
         </div>
       </div>
       <div class="stat">
         <div class="stat-top">
-          <div>
-            <div class="stat-label">Abertos</div>
-            <div class="stat-value" id="s-abertos" style="color:var(--blue-600)">0</div>
-          </div>
+          <div><div class="stat-label">Abertos</div><div class="stat-value" id="s-abertos" style="color:var(--blue-600)">—</div></div>
           <div class="stat-icon" style="background:var(--blue-50)"><i class="ti ti-clock" style="color:var(--blue-400)"></i></div>
         </div>
       </div>
       <div class="stat">
         <div class="stat-top">
-          <div>
-            <div class="stat-label">Em andamento</div>
-            <div class="stat-value" id="s-andamento" style="color:#854F0B">0</div>
-          </div>
+          <div><div class="stat-label">Em andamento</div><div class="stat-value" id="s-andamento" style="color:#854F0B">—</div></div>
           <div class="stat-icon" style="background:#FAEEDA"><i class="ti ti-loader" style="color:#BA7517"></i></div>
         </div>
       </div>
       <div class="stat">
         <div class="stat-top">
-          <div>
-            <div class="stat-label">Resolvidos</div>
-            <div class="stat-value" id="s-resolvidos" style="color:#3B6D11">0</div>
-          </div>
+          <div><div class="stat-label">Resolvidos</div><div class="stat-value" id="s-resolvidos" style="color:#3B6D11">—</div></div>
           <div class="stat-icon" style="background:#EAF3DE"><i class="ti ti-check" style="color:#639922"></i></div>
         </div>
       </div>
     </div>
 
-    <!-- Views -->
+    <!-- Fila -->
     <div id="view-fila">
       <div class="filter-bar">
         <input type="text" id="search" placeholder="Buscar por nome, e-mail ou descrição..." oninput="renderTable()" />
@@ -558,30 +266,24 @@
           <option value="recente">Mais recente</option>
         </select>
         <div class="tab-group">
-          <button class="tab active" onclick="setStatusFilter('aberto em andamento', this)">Ativos</button>
+          <button class="tab active" onclick="setStatusFilter('ativo', this)">Ativos</button>
           <button class="tab" onclick="setStatusFilter('resolvido', this)">Resolvidos</button>
           <button class="tab" onclick="setStatusFilter('', this)">Todos</button>
         </div>
       </div>
-
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th onclick="setSortCol('id')"># <i class="ti ti-selector"></i></th>
-              <th>Solicitação</th>
-              <th onclick="setSortCol('prio')">Prioridade <i class="ti ti-selector"></i></th>
-              <th>Departamento</th>
-              <th onclick="setSortCol('ts')">Abertura <i class="ti ti-selector"></i></th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="ticket-tbody"></tbody>
+          <thead><tr>
+            <th>#</th><th>Solicitação</th><th>Prioridade</th><th>Dept.</th><th>Abertura</th><th>Anexos</th><th>Status</th><th></th>
+          </tr></thead>
+          <tbody id="ticket-tbody">
+            <tr class="loading-row"><td colspan="8"><div class="spinner-blue"></div>Carregando chamados...</td></tr>
+          </tbody>
         </table>
       </div>
     </div>
 
+    <!-- Histórico -->
     <div id="view-historico" style="display:none">
       <div class="filter-bar">
         <input type="text" id="hist-search" placeholder="Buscar no histórico..." oninput="renderHistorico()" />
@@ -594,137 +296,123 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>#</th><th>Solicitação</th><th>Prioridade</th><th>Departamento</th><th>Abertura</th><th>Status final</th><th></th>
-            </tr>
-          </thead>
-          <tbody id="hist-tbody"></tbody>
+          <thead><tr><th>#</th><th>Solicitação</th><th>Prioridade</th><th>Dept.</th><th>Abertura</th><th>Anexos</th><th>Status</th><th></th></tr></thead>
+          <tbody id="hist-tbody"><tr class="loading-row"><td colspan="8"><div class="spinner-blue"></div>Carregando...</td></tr></tbody>
         </table>
       </div>
     </div>
 
+    <!-- Estatísticas -->
     <div id="view-estatisticas" style="display:none">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="table-wrap" style="padding:1.5rem">
-          <h3 style="font-size:13px;font-weight:500;color:var(--blue-800);margin-bottom:1rem">Por prioridade</h3>
-          <div id="chart-prio"></div>
-        </div>
-        <div class="table-wrap" style="padding:1.5rem">
-          <h3 style="font-size:13px;font-weight:500;color:var(--blue-800);margin-bottom:1rem">Por status</h3>
-          <div id="chart-status"></div>
-        </div>
-        <div class="table-wrap" style="padding:1.5rem;grid-column:1/-1">
-          <h3 style="font-size:13px;font-weight:500;color:var(--blue-800);margin-bottom:1rem">Por departamento</h3>
-          <div id="chart-dept"></div>
-        </div>
+      <div class="stat-charts">
+        <div class="chart-card"><h3>Por prioridade</h3><div id="chart-prio"></div></div>
+        <div class="chart-card"><h3>Por status</h3><div id="chart-status"></div></div>
+        <div class="chart-card full"><h3>Por departamento</h3><div id="chart-dept"></div></div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- Detail panel overlay -->
+<!-- Detail panel -->
 <div class="overlay" id="overlay" onclick="closePanel(event)">
   <div class="detail-panel" onclick="event.stopPropagation()">
     <div class="panel-header">
-      <h2 id="panel-title">Chamado #001</h2>
+      <h2 id="panel-title">Chamado</h2>
       <button class="btn-close" onclick="closePanel()"><i class="ti ti-x"></i></button>
     </div>
     <div class="panel-body" id="panel-body"></div>
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="ti ti-x"></i></button>
+  <div id="lightbox-media"></div>
+  <div class="lightbox-name" id="lightbox-name"></div>
+</div>
+
 <div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
 
-<script>
-  const PRIO_ORDER = { alta: 0, media: 1, baixa: 2 };
-  const PRIO_LABEL = { alta: 'Alta', media: 'Média', baixa: 'Baixa' };
-  const PRIO_CLASS = { alta: 'prio-alta', media: 'prio-media', baixa: 'prio-baixa' };
-  const PRIO_ICON  = { alta: 'ti-arrow-up', media: 'ti-minus', baixa: 'ti-arrow-down' };
+<script type="module">
+  import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, doc, updateDoc, Timestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // Seed demo data if empty
-  function seedIfEmpty() {
-    if (localStorage.getItem('suporte_tickets')) return;
-    const now = Date.now();
-    const demo = [
-      { id:1, nome:'Ana Lima', email:'ana@empresa.com', dept:'Financeiro', prio:'alta', desc:'Sistema de pagamentos fora do ar, impossível processar transferências urgentes.', status:'aberto', ts: now-9e5, history:[{action:'Chamado aberto', ts: now-9e5, status:'aberto'}] },
-      { id:2, nome:'Carlos Souza', email:'carlos@empresa.com', dept:'TI', prio:'alta', desc:'Servidor de arquivos com espaço em disco crítico, menos de 2% livre.', status:'em andamento', ts: now-7e5, history:[{action:'Chamado aberto', ts: now-7e5, status:'aberto'},{action:'Status: Em andamento', ts: now-6e5, status:'andamento'}] },
-      { id:3, nome:'Mariana Pereira', email:'mariana@empresa.com', dept:'RH', prio:'media', desc:'Acesso ao portal do colaborador bloqueado após atualização de senha.', status:'aberto', ts: now-5e5, history:[{action:'Chamado aberto', ts: now-5e5, status:'aberto'}] },
-      { id:4, nome:'Rafael Costa', email:'rafael@empresa.com', dept:'TI', prio:'baixa', desc:'Impressora do 3º andar não imprime em cor, somente P&B.', status:'resolvido', ts: now-3e5, history:[{action:'Chamado aberto', ts: now-3e5, status:'aberto'},{action:'Status: Resolvido', ts: now-1e5, status:'resolvido'}] },
-    ];
-    localStorage.setItem('suporte_tickets', JSON.stringify(demo));
-    localStorage.setItem('suporte_next_id', '5');
-  }
-  seedIfEmpty();
+  const SENHA = "suporte2025";
 
-  function getTickets() { return JSON.parse(localStorage.getItem('suporte_tickets') || '[]'); }
-  function saveTickets(t) { localStorage.setItem('suporte_tickets', JSON.stringify(t)); }
+  const firebaseConfig = {
+    apiKey: "AIzaSyBDS_DeQ47wTFaXzTW8upo4-7L-kmcgdns",
+    authDomain: "central-suporte-84753.firebaseapp.com",
+    projectId: "central-suporte-84753",
+    storageBucket: "central-suporte-84753.firebasestorage.app",
+    messagingSenderId: "227157708169",
+    appId: "1:227157708169:web:8c611db486e120775fa558"
+  };
 
-  function showToast(msg) {
-    const el = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 2500);
-  }
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
 
-  // ── Views ──
-  let currentView = 'fila';
-  function setView(v, btn) {
-    currentView = v;
-    ['fila','historico','estatisticas'].forEach(name => {
-      const el = document.getElementById('view-' + name);
-      if (el) el.style.display = name === v ? '' : 'none';
-    });
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    const titles = { fila: 'Fila de chamados', historico: 'Histórico completo', estatisticas: 'Estatísticas' };
-    document.getElementById('topbar-title').textContent = titles[v] || v;
-    if (v === 'historico') renderHistorico();
-    if (v === 'estatisticas') renderEstatisticas();
-    renderTable();
-  }
+  let tickets     = [];
+  let statusFilter = 'ativo';
+  let currentView  = 'fila';
 
-  // ── Filters ──
-  let statusFilter = 'aberto em andamento';
-  function setStatusFilter(f, btn) {
-    statusFilter = f;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    renderTable();
-  }
+  // ── Login ──
+  const stored = sessionStorage.getItem('suporte_auth');
+  if (stored === SENHA) document.getElementById('login-overlay').style.display = 'none';
 
-  let sortCol = null;
-  function setSortCol(col) { sortCol = col; renderTable(); }
+  window.doLogin = function() {
+    const v = document.getElementById('login-input').value;
+    const inp = document.getElementById('login-input');
+    if (v === SENHA) {
+      sessionStorage.setItem('suporte_auth', v);
+      document.getElementById('login-overlay').style.display = 'none';
+      startListening();
+    } else {
+      inp.classList.add('err');
+      document.getElementById('login-err').style.display = 'block';
+      setTimeout(() => inp.classList.remove('err'), 500);
+    }
+  };
 
-  function applyFilters(tickets) {
-    const search = (document.getElementById('search')?.value || '').toLowerCase();
-    const prio   = document.getElementById('sel-prio')?.value || '';
-    const statuses = statusFilter ? statusFilter.split(' ') : [];
-    return tickets.filter(t => {
-      if (statuses.length && !statuses.includes(t.status.replace(' ', ''))) {
-        const normalized = t.status === 'em andamento' ? 'emandamento' : t.status;
-        if (!statusFilter.includes(t.status)) return false;
-      }
-      if (prio && t.prio !== prio) return false;
-      if (search && !`${t.nome} ${t.email} ${t.desc} ${t.dept}`.toLowerCase().includes(search)) return false;
-      return true;
+  window.doLogout = function() {
+    sessionStorage.removeItem('suporte_auth');
+    location.reload();
+  };
+
+  // ── Real-time listener ──
+  function startListening() {
+    onSnapshot(collection(db, 'tickets'), snap => {
+      tickets = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderAll();
     });
   }
 
-  function sortTickets(list) {
-    const sort = sortCol || document.getElementById('sel-sort')?.value || 'prioridade';
-    if (sort === 'prioridade') return list.sort((a,b) => PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio] || a.ts-b.ts);
-    if (sort === 'entrada')    return list.sort((a,b) => a.ts-b.ts);
-    if (sort === 'recente')    return list.sort((a,b) => b.ts-a.ts);
-    if (sort === 'id')         return list.sort((a,b) => a.id-b.id);
-    if (sort === 'prio')       return list.sort((a,b) => PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio]);
-    if (sort === 'ts')         return list.sort((a,b) => a.ts-b.ts);
-    return list;
+  if (stored === SENHA) startListening();
+
+  function renderAll() {
+    updateStats();
+    if (currentView === 'fila')         renderTable();
+    if (currentView === 'historico')    renderHistorico();
+    if (currentView === 'estatisticas') renderEstatisticas();
+  }
+
+  // ── Helpers ──
+  const PRIO_ORDER = { alta:0, media:1, baixa:2 };
+  const PRIO_LABEL = { alta:'Alta', media:'Média', baixa:'Baixa' };
+  const PRIO_CLASS = { alta:'prio-alta', media:'prio-media', baixa:'prio-baixa' };
+  const PRIO_ICON  = { alta:'ti-arrow-up', media:'ti-minus', baixa:'ti-arrow-down' };
+
+  function tsToMs(ts) {
+    if (!ts) return 0;
+    if (ts.toMillis) return ts.toMillis();
+    if (typeof ts === 'number') return ts;
+    return 0;
   }
 
   function timeAgo(ts) {
-    const d = Math.floor((Date.now()-ts)/60000);
+    const ms = tsToMs(ts);
+    if (!ms) return '—';
+    const d = Math.floor((Date.now()-ms)/60000);
     if (d < 1) return 'agora';
     if (d < 60) return d+'min atrás';
     const h = Math.floor(d/60);
@@ -733,99 +421,180 @@
   }
 
   function formatDate(ts) {
-    return new Date(ts).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const ms = tsToMs(ts);
+    if (!ms) return '—';
+    return new Date(ms).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   }
 
-  // ── Stats ──
-  function updateStats() {
-    const t = getTickets();
-    document.getElementById('s-total').textContent      = t.length;
-    document.getElementById('s-abertos').textContent    = t.filter(x => x.status==='aberto').length;
-    document.getElementById('s-andamento').textContent  = t.filter(x => x.status==='em andamento').length;
-    document.getElementById('s-resolvidos').textContent = t.filter(x => x.status==='resolvido').length;
-    const alta = t.filter(x => x.prio==='alta' && x.status!=='resolvido').length;
-    document.getElementById('badge-alta-txt').textContent = alta + ' em alta prioridade';
-    document.getElementById('nb-fila').textContent = t.filter(x => x.status!=='resolvido').length;
-  }
-
-  // ── Table ──
   function statusRowClass(s) {
     if (s==='aberto') return 'status-aberto';
     if (s==='em andamento') return 'status-andamento';
     return 'status-resolvido';
   }
 
-  function renderTable() {
-    updateStats();
-    const tickets = getTickets();
-    const list = sortTickets(applyFilters([...tickets]));
+  // ── Stats ──
+  function updateStats() {
+    document.getElementById('s-total').textContent     = tickets.length;
+    document.getElementById('s-abertos').textContent   = tickets.filter(t=>t.status==='aberto').length;
+    document.getElementById('s-andamento').textContent = tickets.filter(t=>t.status==='em andamento').length;
+    document.getElementById('s-resolvidos').textContent= tickets.filter(t=>t.status==='resolvido').length;
+    const alta = tickets.filter(t=>t.prio==='alta'&&t.status!=='resolvido').length;
+    document.getElementById('badge-alta-txt').textContent = alta + ' em alta prioridade';
+    document.getElementById('nb-fila').textContent = tickets.filter(t=>t.status!=='resolvido').length;
+  }
+
+  // ── Filters ──
+  window.setStatusFilter = function(f, btn) {
+    statusFilter = f;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  };
+
+  function applyFilters(list) {
+    const search = (document.getElementById('search')?.value||'').toLowerCase();
+    const prio   = document.getElementById('sel-prio')?.value||'';
+    return list.filter(t => {
+      if (statusFilter==='ativo'    && t.status==='resolvido')       return false;
+      if (statusFilter==='resolvido'&& t.status!=='resolvido')       return false;
+      if (prio && t.prio!==prio) return false;
+      if (search && !`${t.nome} ${t.email} ${t.desc} ${t.dept}`.toLowerCase().includes(search)) return false;
+      return true;
+    });
+  }
+
+  function sortList(list) {
+    const sort = document.getElementById('sel-sort')?.value||'prioridade';
+    if (sort==='prioridade') return [...list].sort((a,b)=>PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio]||tsToMs(a.ts)-tsToMs(b.ts));
+    if (sort==='entrada')    return [...list].sort((a,b)=>tsToMs(a.ts)-tsToMs(b.ts));
+    if (sort==='recente')    return [...list].sort((a,b)=>tsToMs(b.ts)-tsToMs(a.ts));
+    return list;
+  }
+
+  function attachChip(t) {
+    const n = (t.anexos||[]).length;
+    if (!n) return '<span style="color:var(--gray-300);font-size:12px">—</span>';
+    return `<span class="attach-chip"><i class="ti ti-paperclip" style="font-size:11px"></i>${n}</span>`;
+  }
+
+  // ── Table ──
+  window.renderTable = function() {
+    const list = sortList(applyFilters(tickets));
     const tbody = document.getElementById('ticket-tbody');
     if (!list.length) {
-      tbody.innerHTML = `<tr class="empty-row"><td colspan="7"><i class="ti ti-inbox"></i>Nenhum chamado encontrado</td></tr>`;
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="8"><i class="ti ti-inbox"></i>Nenhum chamado encontrado</td></tr>`;
       return;
     }
     tbody.innerHTML = list.map(t => `
       <tr class="${statusRowClass(t.status)}">
-        <td class="id-cell">#${String(t.id).padStart(3,'0')}</td>
+        <td class="id-cell">#${t.id.slice(0,6)}</td>
         <td class="desc-cell">
-          <div class="desc-main">${t.desc.length>55?t.desc.slice(0,55)+'…':t.desc}</div>
-          <div class="desc-sub">${t.nome} · ${t.email}</div>
+          <div class="desc-main">${(t.desc||'').length>50?(t.desc).slice(0,50)+'…':t.desc||'—'}</div>
+          <div class="desc-sub">${t.nome||'—'} · ${t.email||'—'}</div>
         </td>
         <td><span class="prio ${PRIO_CLASS[t.prio]}"><i class="ti ${PRIO_ICON[t.prio]}" style="font-size:11px"></i>${PRIO_LABEL[t.prio]}</span></td>
-        <td style="font-size:13px;color:var(--gray-500)">${t.dept}</td>
+        <td style="font-size:13px;color:var(--gray-500)">${t.dept||'—'}</td>
         <td style="font-size:12px;color:var(--gray-500);white-space:nowrap">${timeAgo(t.ts)}</td>
+        <td>${attachChip(t)}</td>
         <td>
-          <select class="status-sel" onchange="changeStatus(${t.id}, this.value)">
+          <select class="status-sel" onchange="changeStatus('${t.id}', this.value)">
             <option value="aberto" ${t.status==='aberto'?'selected':''}>Aberto</option>
             <option value="em andamento" ${t.status==='em andamento'?'selected':''}>Em andamento</option>
             <option value="resolvido" ${t.status==='resolvido'?'selected':''}>Resolvido</option>
           </select>
         </td>
-        <td><button class="btn-detail" onclick="openPanel(${t.id})"><i class="ti ti-eye" style="font-size:13px"></i> Ver</button></td>
+        <td><button class="btn-detail" onclick="openPanel('${t.id}')"><i class="ti ti-eye" style="font-size:13px"></i> Ver</button></td>
       </tr>
     `).join('');
-  }
+  };
 
-  function changeStatus(id, val) {
-    const tickets = getTickets();
-    const t = tickets.find(x => x.id===id);
+  // ── Histórico ──
+  window.renderHistorico = function() {
+    const search = (document.getElementById('hist-search')?.value||'').toLowerCase();
+    const prio   = document.getElementById('hist-prio')?.value||'';
+    let list = [...tickets];
+    if (prio)   list = list.filter(t=>t.prio===prio);
+    if (search) list = list.filter(t=>`${t.nome} ${t.email} ${t.desc} ${t.dept}`.toLowerCase().includes(search));
+    list.sort((a,b)=>tsToMs(b.ts)-tsToMs(a.ts));
+    const tbody = document.getElementById('hist-tbody');
+    if (!list.length) {
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="8"><i class="ti ti-inbox"></i>Nenhum registro</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(t=>`
+      <tr>
+        <td class="id-cell">#${t.id.slice(0,6)}</td>
+        <td class="desc-cell">
+          <div class="desc-main">${(t.desc||'').length>50?t.desc.slice(0,50)+'…':t.desc||'—'}</div>
+          <div class="desc-sub">${t.nome||'—'} · ${t.email||'—'}</div>
+        </td>
+        <td><span class="prio ${PRIO_CLASS[t.prio]}"><i class="ti ${PRIO_ICON[t.prio]}" style="font-size:11px"></i>${PRIO_LABEL[t.prio]}</span></td>
+        <td style="font-size:13px;color:var(--gray-500)">${t.dept||'—'}</td>
+        <td style="font-size:12px;color:var(--gray-500)">${formatDate(t.ts)}</td>
+        <td>${attachChip(t)}</td>
+        <td style="font-size:13px">${t.status||'—'}</td>
+        <td><button class="btn-detail" onclick="openPanel('${t.id}')"><i class="ti ti-eye" style="font-size:13px"></i> Ver</button></td>
+      </tr>
+    `).join('');
+  };
+
+  // ── Change status ──
+  window.changeStatus = async function(id, val) {
+    const t = tickets.find(x=>x.id===id);
     if (!t) return;
-    t.status = val;
-    if (!t.history) t.history = [];
-    t.history.push({ action: 'Status alterado: ' + val, ts: Date.now(), status: val });
-    saveTickets(tickets);
-    renderTable();
+    const history = [...(t.history||[]), { action:'Status alterado: '+val, ts:Date.now(), status:val }];
+    await updateDoc(doc(db,'tickets',id), { status: val, history });
     showToast('Status atualizado!');
-  }
+  };
 
   // ── Detail panel ──
-  let panelOpen = null;
-  function openPanel(id) {
-    const tickets = getTickets();
-    const t = tickets.find(x => x.id===id);
+  window.openPanel = function(id) {
+    const t = tickets.find(x=>x.id===id);
     if (!t) return;
-    panelOpen = id;
-    document.getElementById('panel-title').textContent = 'Chamado #' + String(t.id).padStart(3,'0');
+    document.getElementById('panel-title').textContent = 'Chamado #'+t.id.slice(0,6).toUpperCase();
     const prioHtml = `<span class="prio ${PRIO_CLASS[t.prio]}"><i class="ti ${PRIO_ICON[t.prio]}" style="font-size:11px"></i>${PRIO_LABEL[t.prio]}</span>`;
-    const history = (t.history || [{ action: 'Chamado aberto', ts: t.ts, status:'aberto' }]);
+    const history  = t.history||[{action:'Chamado aberto',ts:tsToMs(t.ts)||Date.now(),status:'aberto'}];
     const dotClass = { aberto:'dot-aberto', andamento:'dot-andamento', resolvido:'dot-resolvido' };
-    const dotIcon  = { aberto:'ti-clock', andamento:'ti-loader', resolvido:'ti-check', undefined:'ti-plus' };
+    const dotIcon  = { aberto:'ti-clock', andamento:'ti-loader', resolvido:'ti-check' };
+
+    // Attachments HTML
+    const anexos = t.anexos||[];
+    let anexosHtml = '';
+    if (anexos.length === 0) {
+      anexosHtml = `<div class="attach-empty"><i class="ti ti-paperclip" style="font-size:16px;color:var(--gray-300)"></i>Nenhum anexo enviado</div>`;
+    } else {
+      anexosHtml = `<div class="attach-grid">
+        ${anexos.map((a,i) => {
+          const isVid = a.type && a.type.startsWith('video/');
+          return `<div class="attach-item" onclick="openLightbox(${i},'${id}')">
+            ${isVid
+              ? `<video src="${a.url}" muted playsinline></video>`
+              : `<img src="${a.url}" alt="${a.name}" />`
+            }
+            <span class="attach-type">${isVid?'🎬 Vídeo':'🖼 Imagem'}</span>
+            <span class="attach-name">${a.name||'arquivo'}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
 
     document.getElementById('panel-body').innerHTML = `
       <div class="panel-section">
         <h3>Informações</h3>
-        <div class="info-row"><span class="info-label">Solicitante</span><span class="info-value">${t.nome}</span></div>
-        <div class="info-row"><span class="info-label">E-mail</span><span class="info-value">${t.email}</span></div>
-        <div class="info-row"><span class="info-label">Departamento</span><span class="info-value">${t.dept}</span></div>
+        <div class="info-row"><span class="info-label">Solicitante</span><span class="info-value">${t.nome||'—'}</span></div>
+        <div class="info-row"><span class="info-label">E-mail</span><span class="info-value">${t.email||'—'}</span></div>
+        <div class="info-row"><span class="info-label">Departamento</span><span class="info-value">${t.dept||'—'}</span></div>
         <div class="info-row"><span class="info-label">Prioridade</span><span class="info-value">${prioHtml}</span></div>
         <div class="info-row"><span class="info-label">Abertura</span><span class="info-value">${formatDate(t.ts)}</span></div>
       </div>
-
       <div class="panel-section">
         <h3>Descrição</h3>
-        <div class="desc-box">${t.desc}</div>
+        <div class="desc-box">${t.desc||'—'}</div>
       </div>
-
+      <div class="panel-section">
+        <h3>Anexos ${anexos.length>0?`<span style="background:var(--blue-50);color:var(--blue-700);font-size:11px;padding:1px 8px;border-radius:999px;margin-left:6px;text-transform:none;letter-spacing:0">${anexos.length} arquivo${anexos.length>1?'s':''}</span>`:''}</h3>
+        ${anexosHtml}
+      </div>
       <div class="panel-section">
         <h3>Alterar status</h3>
         <div class="status-change-wrap">
@@ -834,17 +603,16 @@
             <option value="em andamento" ${t.status==='em andamento'?'selected':''}>Em andamento</option>
             <option value="resolvido" ${t.status==='resolvido'?'selected':''}>Resolvido</option>
           </select>
-          <button class="btn-save-status" onclick="saveStatusFromPanel(${t.id})">Salvar</button>
+          <button class="btn-save-status" onclick="savePanelStatus('${t.id}')">Salvar</button>
         </div>
       </div>
-
       <div class="panel-section">
         <h3>Histórico</h3>
         <div class="timeline">
-          ${history.map(h => `
+          ${history.map(h=>`
             <div class="timeline-item">
-              <div class="timeline-dot ${dotClass[h.status] || 'dot-criado'}">
-                <i class="ti ${dotIcon[h.status] || 'ti-plus'}" style="font-size:14px"></i>
+              <div class="timeline-dot ${dotClass[h.status]||'dot-default'}">
+                <i class="ti ${dotIcon[h.status]||'ti-plus'}" style="font-size:14px"></i>
               </div>
               <div class="timeline-content">
                 <div class="timeline-title">${h.action}</div>
@@ -855,58 +623,61 @@
         </div>
       </div>
     `;
-
     document.getElementById('overlay').classList.add('open');
-  }
+  };
 
-  function saveStatusFromPanel(id) {
+  window.savePanelStatus = async function(id) {
     const val = document.getElementById('panel-status-sel').value;
-    changeStatus(id, val);
-    openPanel(id);
-  }
+    await window.changeStatus(id, val);
+    window.openPanel(id);
+  };
 
-  function closePanel(e) {
+  window.closePanel = function(e) {
     if (e && e.target !== document.getElementById('overlay')) return;
     document.getElementById('overlay').classList.remove('open');
-    panelOpen = null;
-  }
+  };
 
-  // ── Histórico ──
-  function renderHistorico() {
-    const tickets = getTickets();
-    const search = (document.getElementById('hist-search')?.value || '').toLowerCase();
-    const prio   = document.getElementById('hist-prio')?.value || '';
-    let list = [...tickets];
-    if (prio)   list = list.filter(t => t.prio===prio);
-    if (search) list = list.filter(t => `${t.nome} ${t.email} ${t.desc} ${t.dept}`.toLowerCase().includes(search));
-    list.sort((a,b) => b.ts-a.ts);
-    const tbody = document.getElementById('hist-tbody');
-    if (!list.length) {
-      tbody.innerHTML = `<tr class="empty-row"><td colspan="7"><i class="ti ti-inbox"></i>Nenhum registro</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = list.map(t => `
-      <tr>
-        <td class="id-cell">#${String(t.id).padStart(3,'0')}</td>
-        <td class="desc-cell">
-          <div class="desc-main">${t.desc.length>55?t.desc.slice(0,55)+'…':t.desc}</div>
-          <div class="desc-sub">${t.nome} · ${t.email}</div>
-        </td>
-        <td><span class="prio ${PRIO_CLASS[t.prio]}"><i class="ti ${PRIO_ICON[t.prio]}" style="font-size:11px"></i>${PRIO_LABEL[t.prio]}</span></td>
-        <td style="font-size:13px;color:var(--gray-500)">${t.dept}</td>
-        <td style="font-size:12px;color:var(--gray-500)">${formatDate(t.ts)}</td>
-        <td style="font-size:13px">${t.status}</td>
-        <td><button class="btn-detail" onclick="openPanel(${t.id})"><i class="ti ti-eye" style="font-size:13px"></i> Ver</button></td>
-      </tr>
-    `).join('');
-  }
+  // ── Lightbox ──
+  window.openLightbox = function(idx, ticketId) {
+    const t = tickets.find(x=>x.id===ticketId);
+    if (!t || !t.anexos) return;
+    const a = t.anexos[idx];
+    const isVid = a.type && a.type.startsWith('video/');
+    document.getElementById('lightbox-media').innerHTML = isVid
+      ? `<video src="${a.url}" controls autoplay style="max-width:90vw;max-height:80vh;border-radius:8px"></video>`
+      : `<img src="${a.url}" alt="${a.name}" style="max-width:90vw;max-height:80vh;border-radius:8px" />`;
+    document.getElementById('lightbox-name').textContent = a.name||'';
+    document.getElementById('lightbox').classList.add('open');
+    event.stopPropagation();
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lightbox-media').innerHTML = '';
+  };
+
+  // ── Views ──
+  window.setView = function(v, btn) {
+    currentView = v;
+    ['fila','historico','estatisticas'].forEach(n => {
+      const el = document.getElementById('view-'+n);
+      if (el) el.style.display = n===v?'':'none';
+    });
+    document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    const titles = { fila:'Fila de chamados', historico:'Histórico completo', estatisticas:'Estatísticas' };
+    document.getElementById('topbar-title').textContent = titles[v]||v;
+    if (v==='historico')    renderHistorico();
+    if (v==='estatisticas') renderEstatisticas();
+    if (v==='fila')         renderTable();
+  };
 
   // ── Estatísticas ──
   function barChart(containerId, data, colors) {
-    const max = Math.max(...data.map(d=>d.val), 1);
-    document.getElementById(containerId).innerHTML = data.map(d => `
+    const max = Math.max(...data.map(d=>d.val),1);
+    document.getElementById(containerId).innerHTML = data.map(d=>`
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <span style="font-size:12px;color:var(--gray-500);width:100px;flex-shrink:0">${d.label}</span>
+        <span style="font-size:12px;color:var(--gray-500);width:110px;flex-shrink:0">${d.label}</span>
         <div style="flex:1;background:var(--gray-100);border-radius:4px;height:20px;overflow:hidden">
           <div style="width:${Math.round(d.val/max*100)}%;background:${colors[d.key]||'var(--blue-400)'};height:100%;border-radius:4px;transition:width 0.4s"></div>
         </div>
@@ -916,31 +687,35 @@
   }
 
   function renderEstatisticas() {
-    const tickets = getTickets();
-    const prioData = ['alta','media','baixa'].map(p => ({ key:p, label:PRIO_LABEL[p], val:tickets.filter(t=>t.prio===p).length }));
-    barChart('chart-prio', prioData, { alta:'#BA7517', media:'var(--blue-400)', baixa:'#639922' });
-
-    const stData = [
-      { key:'aberto', label:'Aberto', val:tickets.filter(t=>t.status==='aberto').length },
-      { key:'andamento', label:'Em andamento', val:tickets.filter(t=>t.status==='em andamento').length },
-      { key:'resolvido', label:'Resolvido', val:tickets.filter(t=>t.status==='resolvido').length },
-    ];
-    barChart('chart-status', stData, { aberto:'var(--blue-400)', andamento:'#BA7517', resolvido:'#639922' });
-
+    barChart('chart-prio',[
+      {key:'alta',   label:'Alta',   val:tickets.filter(t=>t.prio==='alta').length},
+      {key:'media',  label:'Média',  val:tickets.filter(t=>t.prio==='media').length},
+      {key:'baixa',  label:'Baixa',  val:tickets.filter(t=>t.prio==='baixa').length},
+    ],{alta:'#BA7517',media:'var(--blue-400)',baixa:'#639922'});
+    barChart('chart-status',[
+      {key:'aberto',    label:'Aberto',       val:tickets.filter(t=>t.status==='aberto').length},
+      {key:'andamento', label:'Em andamento', val:tickets.filter(t=>t.status==='em andamento').length},
+      {key:'resolvido', label:'Resolvido',    val:tickets.filter(t=>t.status==='resolvido').length},
+    ],{aberto:'var(--blue-400)',andamento:'#BA7517',resolvido:'#639922'});
     const depts = {};
-    tickets.forEach(t => { depts[t.dept] = (depts[t.dept]||0)+1; });
-    const deptData = Object.entries(depts).sort((a,b)=>b[1]-a[1]).map(([k,v]) => ({ key:k, label:k, val:v }));
-    barChart('chart-dept', deptData, {});
+    tickets.forEach(t=>{depts[t.dept]=(depts[t.dept]||0)+1;});
+    barChart('chart-dept',Object.entries(depts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({key:k,label:k,val:v})),{});
   }
 
-  // ── Copy user link ──
-  function copyUserLink() {
-    const url = window.location.href.replace('suporte.html','usuario.html');
-    navigator.clipboard.writeText(url).then(() => showToast('Link copiado: ' + url));
-  }
+  // ── Copy link ──
+  window.copyUserLink = function() {
+    const url = window.location.href.replace('suporte.html','').replace(/\/$/, '') + '/';
+    navigator.clipboard.writeText(url).then(()=>showToast('Link copiado!'));
+  };
 
-  // Init
-  renderTable();
+  // ── Toast ──
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'), 2500);
+  }
+  window.showToast = showToast;
 </script>
 </body>
 </html>
