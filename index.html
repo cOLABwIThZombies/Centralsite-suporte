@@ -7,215 +7,127 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --blue-900: #042C53;
-      --blue-800: #0C447C;
-      --blue-600: #185FA5;
-      --blue-400: #378ADD;
-      --blue-200: #85B7EB;
-      --blue-100: #B5D4F4;
-      --blue-50:  #E6F1FB;
-      --white: #ffffff;
-      --gray-50: #f7f9fc;
-      --gray-100: #eaf1f9;
-      --gray-200: #d0dff0;
-      --gray-500: #5a7a99;
-      --gray-700: #2d4a66;
-      --radius-md: 8px;
-      --radius-lg: 14px;
-      --radius-xl: 20px;
+      --blue-900: #042C53; --blue-800: #0C447C; --blue-600: #185FA5;
+      --blue-400: #378ADD; --blue-200: #85B7EB; --blue-100: #B5D4F4; --blue-50: #E6F1FB;
+      --white: #ffffff; --gray-50: #f7f9fc; --gray-100: #eaf1f9;
+      --gray-200: #d0dff0; --gray-300: #aac3dc; --gray-500: #5a7a99; --gray-700: #2d4a66;
+      --radius-md: 8px; --radius-lg: 14px; --radius-xl: 20px;
       --font: system-ui, -apple-system, sans-serif;
     }
+    body { font-family: var(--font); background: var(--blue-50); min-height: 100vh; display: flex; flex-direction: column; }
 
-    body {
-      font-family: var(--font);
-      background: var(--blue-50);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Top bar */
-    .topbar {
-      background: var(--blue-800);
-      padding: 0 2rem;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    /* Topbar */
+    .topbar { background: var(--blue-800); padding: 0 2rem; height: 56px; display: flex; align-items: center; gap: 10px; }
     .topbar i { color: var(--blue-100); font-size: 22px; }
     .topbar span { color: var(--white); font-size: 16px; font-weight: 500; }
 
     /* Hero */
-    .hero {
-      background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%);
-      padding: 3rem 2rem 4rem;
-      text-align: center;
-      color: var(--white);
-    }
+    .hero { background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%); padding: 3rem 2rem 4rem; text-align: center; color: var(--white); }
     .hero h1 { font-size: 26px; font-weight: 500; margin-bottom: 0.5rem; }
-    .hero p  { font-size: 15px; opacity: 0.85; max-width: 480px; margin: 0 auto; }
+    .hero p { font-size: 15px; opacity: 0.85; max-width: 480px; margin: 0 auto; }
 
-    /* Card container */
-    .card-wrap {
-      max-width: 620px;
-      margin: -2rem auto 3rem;
-      padding: 0 1rem;
-      width: 100%;
-    }
+    /* Card */
+    .card-wrap { max-width: 640px; margin: -2rem auto 3rem; padding: 0 1rem; width: 100%; }
+    .card { background: var(--white); border-radius: var(--radius-xl); box-shadow: 0 4px 24px rgba(4,44,83,0.10); overflow: hidden; }
 
-    .card {
-      background: var(--white);
-      border-radius: var(--radius-xl);
-      box-shadow: 0 4px 24px rgba(4,44,83,0.10);
-      padding: 2rem;
-    }
+    /* Tabs */
+    .card-tabs { display: flex; border-bottom: 1px solid var(--gray-100); }
+    .card-tab { flex: 1; padding: 1rem; font-size: 13px; font-weight: 500; color: var(--gray-500); background: none; border: none; cursor: pointer; font-family: var(--font); display: flex; align-items: center; justify-content: center; gap: 7px; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .card-tab i { font-size: 16px; }
+    .card-tab:hover { color: var(--blue-600); background: var(--blue-50); }
+    .card-tab.active { color: var(--blue-700); border-bottom-color: var(--blue-500, var(--blue-600)); background: var(--blue-50); }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--blue-800);
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid var(--gray-100);
-      padding-bottom: 1rem;
-    }
+    /* Tab panels */
+    .tab-panel { display: none; padding: 1.75rem 2rem; }
+    .tab-panel.active { display: block; }
 
+    /* Form */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group.full { grid-column: 1 / -1; }
-
-    label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--gray-500);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    input, select, textarea {
-      font-family: var(--font);
-      font-size: 14px;
-      color: var(--gray-700);
-      background: var(--gray-50);
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      width: 100%;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--blue-400);
-      box-shadow: 0 0 0 3px rgba(55,138,221,0.15);
-      background: var(--white);
-    }
+    label { font-size: 12px; font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.04em; }
+    input, select, textarea { font-family: var(--font); font-size: 14px; color: var(--gray-700); background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); padding: 10px 12px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue-400); box-shadow: 0 0 0 3px rgba(55,138,221,0.15); background: var(--white); }
     input.err, textarea.err { border-color: #e24b4a; }
     textarea { resize: vertical; min-height: 110px; }
+    .form-err { font-size: 12px; color: #a32d2d; display: none; margin-top: 2px; }
 
-    .form-err {
-      font-size: 12px;
-      color: #a32d2d;
-      display: none;
-      margin-top: 2px;
-    }
-
-    /* Priority selector */
+    /* Priority */
     .prio-group { display: flex; gap: 8px; }
-    .prio-btn {
-      flex: 1;
-      padding: 8px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      background: var(--gray-50);
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--gray-500);
-      text-align: center;
-      transition: all 0.15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
+    .prio-btn { flex: 1; padding: 8px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); background: var(--gray-50); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--gray-500); text-align: center; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: var(--font); }
     .prio-btn i { font-size: 18px; }
-    .prio-btn:hover { border-color: var(--blue-200); }
-    .prio-btn.selected-baixa  { background: #EAF3DE; border-color: #639922; color: #3B6D11; }
-    .prio-btn.selected-media  { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); }
-    .prio-btn.selected-alta   { background: #FAEEDA; border-color: #BA7517; color: #633806; }
+    .prio-btn.selected-baixa { background: #EAF3DE; border-color: #639922; color: #3B6D11; }
+    .prio-btn.selected-media { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); }
+    .prio-btn.selected-alta  { background: #FAEEDA; border-color: #BA7517; color: #633806; }
 
-    /* Submit */
-    .btn-submit {
-      width: 100%;
-      margin-top: 1.5rem;
-      background: var(--blue-600);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 13px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: var(--font);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.15s;
-    }
+    /* Upload area */
+    .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 2rem 1rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--gray-50); position: relative; }
+    .upload-area:hover, .upload-area.drag-over { border-color: var(--blue-400); background: var(--blue-50); }
+    .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { width: 48px; height: 48px; background: var(--blue-50); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; }
+    .upload-icon i { font-size: 24px; color: var(--blue-400); }
+    .upload-title { font-size: 14px; font-weight: 500; color: var(--blue-800); margin-bottom: 4px; }
+    .upload-sub { font-size: 12px; color: var(--gray-500); }
+    .upload-limit { display: inline-block; margin-top: 8px; font-size: 11px; background: var(--blue-50); color: var(--blue-700); padding: 3px 10px; border-radius: 999px; font-weight: 500; }
+
+    /* File previews */
+    .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1rem; }
+    .preview-item { position: relative; border-radius: var(--radius-md); overflow: hidden; border: 1.5px solid var(--gray-200); background: var(--gray-100); aspect-ratio: 1; }
+    .preview-item img, .preview-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .preview-remove { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; background: rgba(0,0,0,0.55); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; transition: background 0.15s; }
+    .preview-remove:hover { background: rgba(200,30,30,0.85); }
+    .preview-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(4,44,83,0.6); color: white; font-size: 10px; padding: 3px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .preview-type { position: absolute; top: 5px; left: 5px; background: rgba(4,44,83,0.65); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; }
+
+    /* Upload progress */
+    .upload-progress { margin-top: 1rem; display: none; }
+    .progress-bar-wrap { background: var(--gray-100); border-radius: 999px; height: 6px; overflow: hidden; margin-top: 6px; }
+    .progress-bar { height: 100%; background: var(--blue-400); border-radius: 999px; transition: width 0.3s; width: 0%; }
+    .progress-label { font-size: 12px; color: var(--gray-500); display: flex; justify-content: space-between; }
+
+    /* Nav buttons */
+    .tab-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+    .btn-next { background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 11px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 7px; transition: background 0.15s; }
+    .btn-next:hover { background: var(--blue-800); }
+    .btn-back { background: none; color: var(--gray-500); border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 7px; transition: all 0.15s; }
+    .btn-back:hover { border-color: var(--blue-200); color: var(--blue-600); }
+    .btn-submit { background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 11px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 7px; transition: background 0.15s; }
     .btn-submit:hover { background: var(--blue-800); }
-    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Success state */
-    .success-card {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      display: none;
-    }
-    .success-icon {
-      width: 64px; height: 64px;
-      background: #EAF3DE;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.25rem;
-    }
+    /* Success */
+    .success-card { text-align: center; padding: 2.5rem 1rem; display: none; }
+    .success-icon { width: 64px; height: 64px; background: #EAF3DE; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
     .success-icon i { font-size: 32px; color: #3B6D11; }
     .success-card h2 { font-size: 18px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.5rem; }
     .success-card p { font-size: 14px; color: var(--gray-500); margin-bottom: 1.5rem; }
-    .ticket-num { font-size: 13px; background: var(--blue-50); color: var(--blue-800); border-radius: var(--radius-md); padding: 10px 16px; display: inline-block; font-weight: 500; margin-bottom: 1.5rem; }
-    .btn-new {
-      background: none;
-      border: 1.5px solid var(--blue-400);
-      color: var(--blue-600);
-      border-radius: var(--radius-md);
-      padding: 10px 24px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: var(--font);
-      transition: background 0.15s;
-    }
+    .ticket-num { font-size: 13px; background: var(--blue-50); color: var(--blue-800); border-radius: var(--radius-md); padding: 10px 16px; display: inline-block; font-weight: 500; }
+    .btn-new { background: none; border: 1.5px solid var(--blue-400); color: var(--blue-600); border-radius: var(--radius-md); padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: background 0.15s; margin-top: 1.25rem; }
     .btn-new:hover { background: var(--blue-50); }
 
-    /* Footer */
-    footer {
-      margin-top: auto;
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 12px;
-      color: var(--gray-500);
-    }
+    /* Spinner */
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Step indicator */
+    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2rem 0; }
+    .step { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--gray-300); }
+    .step-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gray-200); color: var(--gray-500); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.2s; flex-shrink: 0; }
+    .step.active .step-dot { background: var(--blue-600); color: white; }
+    .step.active { color: var(--blue-700); }
+    .step.done .step-dot { background: #639922; color: white; }
+    .step-line { flex: 1; height: 1px; background: var(--gray-200); max-width: 40px; }
+
+    footer { margin-top: auto; text-align: center; padding: 1.5rem; font-size: 12px; color: var(--gray-500); }
 
     @media (max-width: 540px) {
       .form-grid { grid-template-columns: 1fr; }
       .form-group.full { grid-column: 1; }
       .hero { padding: 2rem 1rem 3rem; }
       .hero h1 { font-size: 20px; }
+      .tab-panel { padding: 1.25rem; }
+      .preview-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -232,14 +144,34 @@
 </div>
 
 <div class="card-wrap">
-  <div class="card">
+  <div class="card" id="main-card">
 
-    <!-- Form -->
-    <div id="form-section">
-      <div class="card-title">
-        <i class="ti ti-ticket" style="font-size:18px;color:var(--blue-400)"></i>
-        Abrir novo chamado
+    <!-- Step indicator -->
+    <div class="steps" id="steps-bar">
+      <div class="step active" id="step1-ind">
+        <div class="step-dot">1</div>
+        <span>Seus dados</span>
       </div>
+      <div class="step-line"></div>
+      <div class="step" id="step2-ind">
+        <div class="step-dot">2</div>
+        <span>Anexos</span>
+      </div>
+    </div>
+
+    <!-- Tab nav -->
+    <div class="card-tabs" id="card-tabs">
+      <button class="card-tab active" id="tab-btn-1" onclick="goTab(1)">
+        <i class="ti ti-user"></i> Dados do chamado
+      </button>
+      <button class="card-tab" id="tab-btn-2" onclick="goTab(2)">
+        <i class="ti ti-paperclip"></i> Anexos
+        <span id="attach-count" style="display:none;background:var(--blue-600);color:white;font-size:10px;padding:1px 6px;border-radius:999px;margin-left:2px">0</span>
+      </button>
+    </div>
+
+    <!-- Panel 1: Dados -->
+    <div class="tab-panel active" id="panel-1">
       <div class="form-grid">
         <div class="form-group">
           <label>Seu nome *</label>
@@ -258,15 +190,9 @@
         <div class="form-group">
           <label>Prioridade</label>
           <div class="prio-group">
-            <button class="prio-btn" id="pb-baixa" onclick="setPrio('baixa')">
-              <i class="ti ti-arrow-down"></i>Baixa
-            </button>
-            <button class="prio-btn selected-media" id="pb-media" onclick="setPrio('media')">
-              <i class="ti ti-minus"></i>Média
-            </button>
-            <button class="prio-btn" id="pb-alta" onclick="setPrio('alta')">
-              <i class="ti ti-arrow-up"></i>Alta
-            </button>
+            <button class="prio-btn" id="pb-baixa" onclick="setPrio('baixa')"><i class="ti ti-arrow-down"></i>Baixa</button>
+            <button class="prio-btn selected-media" id="pb-media" onclick="setPrio('media')"><i class="ti ti-minus"></i>Média</button>
+            <button class="prio-btn" id="pb-alta" onclick="setPrio('alta')"><i class="ti ti-arrow-up"></i>Alta</button>
           </div>
         </div>
         <div class="form-group full">
@@ -275,9 +201,46 @@
           <span class="form-err" id="err-desc">Campo obrigatório</span>
         </div>
       </div>
-      <button class="btn-submit" onclick="submitTicket()">
-        <i class="ti ti-send"></i> Enviar chamado
-      </button>
+      <div class="tab-nav">
+        <span style="font-size:12px;color:var(--gray-500)">* Campos obrigatórios</span>
+        <button class="btn-next" onclick="goTab(2)">
+          Próximo <i class="ti ti-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel 2: Anexos -->
+    <div class="tab-panel" id="panel-2">
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem">Anexe imagens ou vídeos que ajudem a ilustrar o problema. <strong>Máximo de 3 arquivos.</strong></p>
+
+      <div class="upload-area" id="upload-area">
+        <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)" />
+        <div class="upload-icon"><i class="ti ti-cloud-upload"></i></div>
+        <div class="upload-title">Arraste arquivos aqui ou clique para selecionar</div>
+        <div class="upload-sub">Imagens (JPG, PNG, GIF) e vídeos (MP4, MOV)</div>
+        <span class="upload-limit"><i class="ti ti-paperclip" style="font-size:11px;vertical-align:-1px"></i> Até 3 arquivos</span>
+      </div>
+
+      <div class="preview-grid" id="preview-grid"></div>
+
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-label">
+          <span id="progress-text">Enviando arquivos...</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="tab-nav" style="margin-top:1.5rem">
+        <button class="btn-back" onclick="goTab(1)">
+          <i class="ti ti-arrow-left"></i> Voltar
+        </button>
+        <button class="btn-submit" id="btn-enviar" onclick="submitTicket()">
+          <i class="ti ti-send"></i> Enviar chamado
+        </button>
+      </div>
     </div>
 
     <!-- Success -->
@@ -295,58 +258,226 @@
 
 <footer>Central de Suporte &copy; 2025</footer>
 
-<script>
-  let prioAtual = 'media';
+<script type="module">
+  import { initializeApp }        from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-  function setPrio(p) {
+  const firebaseConfig = {
+    apiKey: "AIzaSyBDS_DeQ47wTFaXzTW8upo4-7L-kmcgdns",
+    authDomain: "central-suporte-84753.firebaseapp.com",
+    projectId: "central-suporte-84753",
+    storageBucket: "central-suporte-84753.firebasestorage.app",
+    messagingSenderId: "227157708169",
+    appId: "1:227157708169:web:8c611db486e120775fa558"
+  };
+
+  const app     = initializeApp(firebaseConfig);
+  const db      = getFirestore(app);
+  const storage = getStorage(app);
+
+  let prioAtual   = 'media';
+  let selectedFiles = [];
+
+  // ── Tab navigation ──
+  window.goTab = function(n) {
+    if (n === 2 && !validateStep1()) return;
+    [1, 2].forEach(i => {
+      document.getElementById('panel-' + i).classList.toggle('active', i === n);
+      document.getElementById('tab-btn-' + i).classList.toggle('active', i === n);
+      document.getElementById('step' + i + '-ind').classList.toggle('active', i === n);
+    });
+    if (n === 2) document.getElementById('step1-ind').classList.add('done');
+    else         document.getElementById('step1-ind').classList.remove('done');
+  };
+
+  // ── Priority ──
+  window.setPrio = function(p) {
     prioAtual = p;
     ['baixa','media','alta'].forEach(v => {
-      const btn = document.getElementById('pb-' + v);
-      btn.className = 'prio-btn' + (v === p ? ' selected-' + v : '');
+      document.getElementById('pb-' + v).className = 'prio-btn' + (v === p ? ' selected-' + v : '');
     });
+  };
+
+  // ── File handling ──
+  window.handleFiles = function(files) {
+    const remaining = 3 - selectedFiles.length;
+    if (remaining <= 0) { alert('Máximo de 3 arquivos atingido.'); return; }
+    const toAdd = Array.from(files).slice(0, remaining);
+    toAdd.forEach(f => {
+      if (!f.type.startsWith('image/') && !f.type.startsWith('video/')) return;
+      selectedFiles.push(f);
+    });
+    if (Array.from(files).length > remaining) {
+      alert(`Somente ${remaining} arquivo(s) adicionado(s). Limite de 3 atingido.`);
+    }
+    renderPreviews();
+    updateAttachCount();
+    document.getElementById('file-input').value = '';
+  };
+
+  function renderPreviews() {
+    const grid = document.getElementById('preview-grid');
+    const area = document.getElementById('upload-area');
+    grid.innerHTML = '';
+    selectedFiles.forEach((f, i) => {
+      const url  = URL.createObjectURL(f);
+      const isVid = f.type.startsWith('video/');
+      const item = document.createElement('div');
+      item.className = 'preview-item';
+      item.innerHTML = `
+        ${isVid
+          ? `<video src="${url}" muted playsinline style="width:100%;height:100%;object-fit:cover"></video>`
+          : `<img src="${url}" alt="preview" />`
+        }
+        <span class="preview-type">${isVid ? '🎬 Vídeo' : '🖼 Imagem'}</span>
+        <span class="preview-label">${f.name}</span>
+        <button class="preview-remove" onclick="removeFile(${i})" title="Remover"><i class="ti ti-x" style="font-size:11px"></i></button>
+      `;
+      grid.appendChild(item);
+    });
+    area.style.display = selectedFiles.length >= 3 ? 'none' : '';
   }
 
-  function validate() {
+  window.removeFile = function(i) {
+    selectedFiles.splice(i, 1);
+    renderPreviews();
+    updateAttachCount();
+    document.getElementById('upload-area').style.display = '';
+  };
+
+  function updateAttachCount() {
+    const badge = document.getElementById('attach-count');
+    if (selectedFiles.length > 0) {
+      badge.textContent = selectedFiles.length;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  // Drag & drop
+  const area = document.getElementById('upload-area');
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    window.handleFiles(e.dataTransfer.files);
+  });
+
+  // ── Validation ──
+  function validateStep1() {
     let ok = true;
     const nome  = document.getElementById('f-nome');
     const email = document.getElementById('f-email');
     const desc  = document.getElementById('f-desc');
     [nome, email, desc].forEach(el => el.classList.remove('err'));
     ['err-nome','err-email','err-desc'].forEach(id => document.getElementById(id).style.display = 'none');
-    if (!nome.value.trim()) { nome.classList.add('err'); document.getElementById('err-nome').style.display = 'block'; ok = false; }
+    if (!nome.value.trim())  { nome.classList.add('err');  document.getElementById('err-nome').style.display  = 'block'; ok = false; }
     if (!email.value.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(email.value)) { email.classList.add('err'); document.getElementById('err-email').style.display = 'block'; ok = false; }
-    if (!desc.value.trim()) { desc.classList.add('err'); document.getElementById('err-desc').style.display = 'block'; ok = false; }
+    if (!desc.value.trim())  { desc.classList.add('err');  document.getElementById('err-desc').style.display  = 'block'; ok = false; }
     return ok;
   }
 
-  function submitTicket() {
-    if (!validate()) return;
-    const tickets = JSON.parse(localStorage.getItem('suporte_tickets') || '[]');
-    const nextId  = parseInt(localStorage.getItem('suporte_next_id') || '1');
-    const ticket  = {
-      id:     nextId,
-      nome:   document.getElementById('f-nome').value.trim(),
-      email:  document.getElementById('f-email').value.trim(),
-      dept:   document.getElementById('f-dept').value.trim() || '—',
-      prio:   prioAtual,
-      desc:   document.getElementById('f-desc').value.trim(),
-      status: 'aberto',
-      ts:     Date.now()
-    };
-    tickets.push(ticket);
-    localStorage.setItem('suporte_tickets', JSON.stringify(tickets));
-    localStorage.setItem('suporte_next_id', String(nextId + 1));
-    document.getElementById('ticket-num-display').textContent = 'Protocolo #' + String(nextId).padStart(3,'0');
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('success-section').style.display = 'block';
+  // ── Upload files to Storage ──
+  async function uploadFiles(ticketId) {
+    if (selectedFiles.length === 0) return [];
+    const progressWrap = document.getElementById('upload-progress');
+    const bar          = document.getElementById('progress-bar');
+    const pct          = document.getElementById('progress-pct');
+    const txt          = document.getElementById('progress-text');
+    progressWrap.style.display = 'block';
+
+    const urls = [];
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const f    = selectedFiles[i];
+      const path = `tickets/${ticketId}/${Date.now()}_${f.name}`;
+      const storageRef = ref(storage, path);
+      txt.textContent = `Enviando arquivo ${i+1} de ${selectedFiles.length}…`;
+
+      await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(storageRef, f);
+        task.on('state_changed',
+          snap => {
+            const fileProgress = snap.bytesTransferred / snap.totalBytes;
+            const overall = ((i + fileProgress) / selectedFiles.length) * 100;
+            bar.style.width = overall + '%';
+            pct.textContent = Math.round(overall) + '%';
+          },
+          reject,
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            urls.push({ name: f.name, type: f.type, url });
+            resolve();
+          }
+        );
+      });
+    }
+
+    bar.style.width = '100%';
+    pct.textContent = '100%';
+    txt.textContent = 'Upload concluído!';
+    return urls;
   }
 
-  function resetForm() {
+  // ── Submit ──
+  window.submitTicket = async function() {
+    if (!validateStep1()) { window.goTab(1); return; }
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Enviando…';
+
+    try {
+      // Create ticket doc first to get ID
+      const docRef = await addDoc(collection(db, 'tickets'), {
+        nome:    document.getElementById('f-nome').value.trim(),
+        email:   document.getElementById('f-email').value.trim(),
+        dept:    document.getElementById('f-dept').value.trim() || '—',
+        prio:    prioAtual,
+        desc:    document.getElementById('f-desc').value.trim(),
+        status:  'aberto',
+        ts:      serverTimestamp(),
+        anexos:  [],
+        history: [{ action: 'Chamado aberto', ts: Date.now(), status: 'aberto' }]
+      });
+
+      // Upload files and update doc
+      const anexos = await uploadFiles(docRef.id);
+      if (anexos.length > 0) {
+        const { updateDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+        await updateDoc(doc(db, 'tickets', docRef.id), { anexos });
+      }
+
+      document.getElementById('ticket-num-display').textContent = 'Protocolo: ' + docRef.id.slice(0,8).toUpperCase();
+      document.getElementById('main-card').querySelector('#steps-bar').style.display = 'none';
+      document.getElementById('card-tabs').style.display = 'none';
+      document.getElementById('panel-2').classList.remove('active');
+      document.getElementById('success-section').style.display = 'block';
+
+    } catch(e) {
+      alert('Erro ao enviar. Tente novamente.');
+      console.error(e);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-send"></i> Enviar chamado';
+    }
+  };
+
+  // ── Reset ──
+  window.resetForm = function() {
     ['f-nome','f-email','f-dept','f-desc'].forEach(id => document.getElementById(id).value = '');
-    setPrio('media');
-    document.getElementById('form-section').style.display = 'block';
+    window.setPrio('media');
+    selectedFiles = [];
+    renderPreviews();
+    updateAttachCount();
+    document.getElementById('upload-progress').style.display = 'none';
+    document.getElementById('progress-bar').style.width = '0%';
     document.getElementById('success-section').style.display = 'none';
-  }
+    document.getElementById('card-tabs').style.display = '';
+    document.getElementById('steps-bar').style.display = '';
+    window.goTab(1);
+    document.getElementById('step1-ind').classList.remove('done');
+  };
 </script>
 </body>
 </html>
