@@ -61,30 +61,13 @@
     .prio-btn.selected-media { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); }
     .prio-btn.selected-alta  { background: #FAEEDA; border-color: #BA7517; color: #633806; }
 
-    /* Upload area */
-    .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 2rem 1rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--gray-50); position: relative; }
-    .upload-area:hover, .upload-area.drag-over { border-color: var(--blue-400); background: var(--blue-50); }
-    .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .upload-icon { width: 48px; height: 48px; background: var(--blue-50); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; }
-    .upload-icon i { font-size: 24px; color: var(--blue-400); }
-    .upload-title { font-size: 14px; font-weight: 500; color: var(--blue-800); margin-bottom: 4px; }
-    .upload-sub { font-size: 12px; color: var(--gray-500); }
-    .upload-limit { display: inline-block; margin-top: 8px; font-size: 11px; background: var(--blue-50); color: var(--blue-700); padding: 3px 10px; border-radius: 999px; font-weight: 500; }
-
-    /* File previews */
-    .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1rem; }
-    .preview-item { position: relative; border-radius: var(--radius-md); overflow: hidden; border: 1.5px solid var(--gray-200); background: var(--gray-100); aspect-ratio: 1; }
-    .preview-item img, .preview-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .preview-remove { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; background: rgba(0,0,0,0.55); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; transition: background 0.15s; }
-    .preview-remove:hover { background: rgba(200,30,30,0.85); }
-    .preview-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(4,44,83,0.6); color: white; font-size: 10px; padding: 3px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .preview-type { position: absolute; top: 5px; left: 5px; background: rgba(4,44,83,0.65); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; }
-
-    /* Upload progress */
-    .upload-progress { margin-top: 1rem; display: none; }
-    .progress-bar-wrap { background: var(--gray-100); border-radius: 999px; height: 6px; overflow: hidden; margin-top: 6px; }
-    .progress-bar { height: 100%; background: var(--blue-400); border-radius: 999px; transition: width 0.3s; width: 0%; }
-    .progress-label { font-size: 12px; color: var(--gray-500); display: flex; justify-content: space-between; }
+    /* Coming soon */
+    .coming-soon { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; text-align: center; }
+    .coming-icon { width: 72px; height: 72px; background: #FFF3E0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
+    .coming-icon i { font-size: 36px; color: #E65100; }
+    .coming-title { font-size: 16px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.4rem; }
+    .coming-sub { font-size: 13px; color: var(--gray-500); max-width: 320px; line-height: 1.6; }
+    .coming-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 1rem; background: #FFF3E0; color: #BF360C; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 999px; }
 
     /* Nav buttons */
     .tab-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
@@ -209,31 +192,20 @@
       </div>
     </div>
 
-    <!-- Panel 2: Anexos -->
+    <!-- Panel 2: Anexos (em desenvolvimento) -->
     <div class="tab-panel" id="panel-2">
-      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem">Anexe imagens ou vídeos que ajudem a ilustrar o problema. <strong>Máximo de 3 arquivos.</strong></p>
-
-      <div class="upload-area" id="upload-area">
-        <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)" />
-        <div class="upload-icon"><i class="ti ti-cloud-upload"></i></div>
-        <div class="upload-title">Arraste arquivos aqui ou clique para selecionar</div>
-        <div class="upload-sub">Imagens (JPG, PNG, GIF) e vídeos (MP4, MOV)</div>
-        <span class="upload-limit"><i class="ti ti-paperclip" style="font-size:11px;vertical-align:-1px"></i> Até 3 arquivos</span>
-      </div>
-
-      <div class="preview-grid" id="preview-grid"></div>
-
-      <div class="upload-progress" id="upload-progress">
-        <div class="progress-label">
-          <span id="progress-text">Enviando arquivos...</span>
-          <span id="progress-pct">0%</span>
+      <div class="coming-soon">
+        <div class="coming-icon">
+          <i class="ti ti-crane"></i>
         </div>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" id="progress-bar"></div>
+        <div class="coming-title">Trabalhando na implementação</div>
+        <div class="coming-sub">A funcionalidade de envio de anexos está sendo desenvolvida e em breve estará disponível para você.</div>
+        <div class="coming-badge">
+          <i class="ti ti-tools" style="font-size:13px"></i> Em desenvolvimento
         </div>
       </div>
 
-      <div class="tab-nav" style="margin-top:1.5rem">
+      <div class="tab-nav" style="margin-top:0.5rem">
         <button class="btn-back" onclick="goTab(1)">
           <i class="ti ti-arrow-left"></i> Voltar
         </button>
@@ -259,9 +231,8 @@
 <footer>Central de Suporte &copy; 2025</footer>
 
 <script type="module">
-  import { initializeApp }        from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBDS_DeQ47wTFaXzTW8upo4-7L-kmcgdns",
@@ -272,12 +243,9 @@
     appId: "1:227157708169:web:8c611db486e120775fa558"
   };
 
-  const app     = initializeApp(firebaseConfig);
-  const db      = getFirestore(app);
-  const storage = getStorage(app);
-
-  let prioAtual   = 'media';
-  let selectedFiles = [];
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  let prioAtual = 'media';
 
   // ── Tab navigation ──
   window.goTab = function(n) {
@@ -299,73 +267,6 @@
     });
   };
 
-  // ── File handling ──
-  window.handleFiles = function(files) {
-    const remaining = 3 - selectedFiles.length;
-    if (remaining <= 0) { alert('Máximo de 3 arquivos atingido.'); return; }
-    const toAdd = Array.from(files).slice(0, remaining);
-    toAdd.forEach(f => {
-      if (!f.type.startsWith('image/') && !f.type.startsWith('video/')) return;
-      selectedFiles.push(f);
-    });
-    if (Array.from(files).length > remaining) {
-      alert(`Somente ${remaining} arquivo(s) adicionado(s). Limite de 3 atingido.`);
-    }
-    renderPreviews();
-    updateAttachCount();
-    document.getElementById('file-input').value = '';
-  };
-
-  function renderPreviews() {
-    const grid = document.getElementById('preview-grid');
-    const area = document.getElementById('upload-area');
-    grid.innerHTML = '';
-    selectedFiles.forEach((f, i) => {
-      const url  = URL.createObjectURL(f);
-      const isVid = f.type.startsWith('video/');
-      const item = document.createElement('div');
-      item.className = 'preview-item';
-      item.innerHTML = `
-        ${isVid
-          ? `<video src="${url}" muted playsinline style="width:100%;height:100%;object-fit:cover"></video>`
-          : `<img src="${url}" alt="preview" />`
-        }
-        <span class="preview-type">${isVid ? '🎬 Vídeo' : '🖼 Imagem'}</span>
-        <span class="preview-label">${f.name}</span>
-        <button class="preview-remove" onclick="removeFile(${i})" title="Remover"><i class="ti ti-x" style="font-size:11px"></i></button>
-      `;
-      grid.appendChild(item);
-    });
-    area.style.display = selectedFiles.length >= 3 ? 'none' : '';
-  }
-
-  window.removeFile = function(i) {
-    selectedFiles.splice(i, 1);
-    renderPreviews();
-    updateAttachCount();
-    document.getElementById('upload-area').style.display = '';
-  };
-
-  function updateAttachCount() {
-    const badge = document.getElementById('attach-count');
-    if (selectedFiles.length > 0) {
-      badge.textContent = selectedFiles.length;
-      badge.style.display = '';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-
-  // Drag & drop
-  const area = document.getElementById('upload-area');
-  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
-  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
-  area.addEventListener('drop', e => {
-    e.preventDefault();
-    area.classList.remove('drag-over');
-    window.handleFiles(e.dataTransfer.files);
-  });
-
   // ── Validation ──
   function validateStep1() {
     let ok = true;
@@ -380,56 +281,13 @@
     return ok;
   }
 
-  // ── Upload files to Storage ──
-  async function uploadFiles(ticketId) {
-    if (selectedFiles.length === 0) return [];
-    const progressWrap = document.getElementById('upload-progress');
-    const bar          = document.getElementById('progress-bar');
-    const pct          = document.getElementById('progress-pct');
-    const txt          = document.getElementById('progress-text');
-    progressWrap.style.display = 'block';
-
-    const urls = [];
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const f    = selectedFiles[i];
-      const path = `tickets/${ticketId}/${Date.now()}_${f.name}`;
-      const storageRef = ref(storage, path);
-      txt.textContent = `Enviando arquivo ${i+1} de ${selectedFiles.length}…`;
-
-      await new Promise((resolve, reject) => {
-        const task = uploadBytesResumable(storageRef, f);
-        task.on('state_changed',
-          snap => {
-            const fileProgress = snap.bytesTransferred / snap.totalBytes;
-            const overall = ((i + fileProgress) / selectedFiles.length) * 100;
-            bar.style.width = overall + '%';
-            pct.textContent = Math.round(overall) + '%';
-          },
-          reject,
-          async () => {
-            const url = await getDownloadURL(task.snapshot.ref);
-            urls.push({ name: f.name, type: f.type, url });
-            resolve();
-          }
-        );
-      });
-    }
-
-    bar.style.width = '100%';
-    pct.textContent = '100%';
-    txt.textContent = 'Upload concluído!';
-    return urls;
-  }
-
   // ── Submit ──
   window.submitTicket = async function() {
     if (!validateStep1()) { window.goTab(1); return; }
     const btn = document.getElementById('btn-enviar');
     btn.disabled = true;
     btn.innerHTML = '<div class="spinner"></div> Enviando…';
-
     try {
-      // Create ticket doc first to get ID
       const docRef = await addDoc(collection(db, 'tickets'), {
         nome:    document.getElementById('f-nome').value.trim(),
         email:   document.getElementById('f-email').value.trim(),
@@ -437,24 +295,15 @@
         prio:    prioAtual,
         desc:    document.getElementById('f-desc').value.trim(),
         status:  'aberto',
-        ts:      serverTimestamp(),
         anexos:  [],
+        ts:      serverTimestamp(),
         history: [{ action: 'Chamado aberto', ts: Date.now(), status: 'aberto' }]
       });
-
-      // Upload files and update doc
-      const anexos = await uploadFiles(docRef.id);
-      if (anexos.length > 0) {
-        const { updateDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-        await updateDoc(doc(db, 'tickets', docRef.id), { anexos });
-      }
-
       document.getElementById('ticket-num-display').textContent = 'Protocolo: ' + docRef.id.slice(0,8).toUpperCase();
       document.getElementById('main-card').querySelector('#steps-bar').style.display = 'none';
       document.getElementById('card-tabs').style.display = 'none';
       document.getElementById('panel-2').classList.remove('active');
       document.getElementById('success-section').style.display = 'block';
-
     } catch(e) {
       alert('Erro ao enviar. Tente novamente.');
       console.error(e);
@@ -467,11 +316,6 @@
   window.resetForm = function() {
     ['f-nome','f-email','f-dept','f-desc'].forEach(id => document.getElementById(id).value = '');
     window.setPrio('media');
-    selectedFiles = [];
-    renderPreviews();
-    updateAttachCount();
-    document.getElementById('upload-progress').style.display = 'none';
-    document.getElementById('progress-bar').style.width = '0%';
     document.getElementById('success-section').style.display = 'none';
     document.getElementById('card-tabs').style.display = '';
     document.getElementById('steps-bar').style.display = '';
@@ -479,5 +323,7 @@
     document.getElementById('step1-ind').classList.remove('done');
   };
 </script>
+
+
 </body>
 </html>
