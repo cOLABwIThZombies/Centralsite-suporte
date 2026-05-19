@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abrir Chamado — Suporte</title>
+  <title>Central de Suporte</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --blue-900: #042C53; --blue-800: #0C447C; --blue-600: #185FA5;
-      --blue-400: #378ADD; --blue-200: #85B7EB; --blue-100: #B5D4F4; --blue-50: #E6F1FB;
+      --blue-400: #378ADD; --blue-100: #B5D4F4; --blue-50: #E6F1FB;
       --white: #ffffff; --gray-50: #f7f9fc; --gray-100: #eaf1f9;
       --gray-200: #d0dff0; --gray-300: #aac3dc; --gray-500: #5a7a99; --gray-700: #2d4a66;
       --radius-md: 8px; --radius-lg: 14px; --radius-xl: 20px;
@@ -23,24 +23,39 @@
     .topbar span { color: var(--white); font-size: 16px; font-weight: 500; }
 
     /* Hero */
-    .hero { background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%); padding: 3rem 2rem 4rem; text-align: center; color: var(--white); }
-    .hero h1 { font-size: 26px; font-weight: 500; margin-bottom: 0.5rem; }
-    .hero p { font-size: 15px; opacity: 0.85; max-width: 480px; margin: 0 auto; }
+    .hero { background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%); padding: 2.5rem 2rem 4rem; text-align: center; color: var(--white); }
+    .hero h1 { font-size: 24px; font-weight: 500; margin-bottom: 0.5rem; }
+    .hero p  { font-size: 14px; opacity: 0.85; max-width: 460px; margin: 0 auto 1.5rem; }
+
+    /* Main tab switcher */
+    .main-tabs { display: inline-flex; background: rgba(255,255,255,0.15); border-radius: var(--radius-lg); padding: 4px; gap: 4px; }
+    .main-tab { padding: 8px 22px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: var(--font); color: rgba(255,255,255,0.75); background: none; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+    .main-tab.active { background: var(--white); color: var(--blue-800); }
+    .main-tab:hover:not(.active) { color: var(--white); background: rgba(255,255,255,0.1); }
 
     /* Card */
     .card-wrap { max-width: 640px; margin: -2rem auto 3rem; padding: 0 1rem; width: 100%; }
     .card { background: var(--white); border-radius: var(--radius-xl); box-shadow: 0 4px 24px rgba(4,44,83,0.10); overflow: hidden; }
 
-    /* Tabs */
-    .card-tabs { display: flex; border-bottom: 1px solid var(--gray-100); }
-    .card-tab { flex: 1; padding: 1rem; font-size: 13px; font-weight: 500; color: var(--gray-500); background: none; border: none; cursor: pointer; font-family: var(--font); display: flex; align-items: center; justify-content: center; gap: 7px; border-bottom: 2px solid transparent; transition: all 0.15s; }
-    .card-tab i { font-size: 16px; }
-    .card-tab:hover { color: var(--blue-600); background: var(--blue-50); }
-    .card-tab.active { color: var(--blue-700); border-bottom-color: var(--blue-500, var(--blue-600)); background: var(--blue-50); }
+    /* Inner tabs (Dados / Anexos) */
+    .inner-tabs { display: flex; border-bottom: 1px solid var(--gray-100); }
+    .inner-tab { flex: 1; padding: 1rem; font-size: 13px; font-weight: 500; color: var(--gray-500); background: none; border: none; cursor: pointer; font-family: var(--font); display: flex; align-items: center; justify-content: center; gap: 7px; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .inner-tab i { font-size: 16px; }
+    .inner-tab:hover { color: var(--blue-600); background: var(--blue-50); }
+    .inner-tab.active { color: var(--blue-700); border-bottom-color: var(--blue-600); background: var(--blue-50); }
 
-    /* Tab panels */
-    .tab-panel { display: none; padding: 1.75rem 2rem; }
-    .tab-panel.active { display: block; }
+    /* Step indicator */
+    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2rem 0; }
+    .step { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--gray-300); }
+    .step-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gray-200); color: var(--gray-500); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.2s; flex-shrink: 0; }
+    .step.active .step-dot { background: var(--blue-600); color: white; }
+    .step.active { color: var(--blue-700); }
+    .step.done .step-dot { background: #639922; color: white; }
+    .step-line { flex: 1; height: 1px; background: var(--gray-200); max-width: 40px; }
+
+    /* Panels */
+    .panel { display: none; padding: 1.75rem 2rem; }
+    .panel.active { display: block; }
 
     /* Form */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -61,7 +76,7 @@
     .prio-btn.selected-media { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); }
     .prio-btn.selected-alta  { background: #FAEEDA; border-color: #BA7517; color: #633806; }
 
-    /* Coming soon */
+    /* Coming soon (Anexos) */
     .coming-soon { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; text-align: center; }
     .coming-icon { width: 72px; height: 72px; background: #FFF3E0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
     .coming-icon i { font-size: 36px; color: #E65100; }
@@ -69,7 +84,7 @@
     .coming-sub { font-size: 13px; color: var(--gray-500); max-width: 320px; line-height: 1.6; }
     .coming-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 1rem; background: #FFF3E0; color: #BF360C; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 999px; }
 
-    /* Nav buttons */
+    /* Buttons */
     .tab-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
     .btn-next { background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 11px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 7px; transition: background 0.15s; }
     .btn-next:hover { background: var(--blue-800); }
@@ -80,37 +95,78 @@
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Success */
-    .success-card { text-align: center; padding: 2.5rem 1rem; display: none; }
+    .success-card { display: none; text-align: center; padding: 2.5rem 1rem; }
     .success-icon { width: 64px; height: 64px; background: #EAF3DE; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
     .success-icon i { font-size: 32px; color: #3B6D11; }
     .success-card h2 { font-size: 18px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.5rem; }
-    .success-card p { font-size: 14px; color: var(--gray-500); margin-bottom: 1.5rem; }
-    .ticket-num { font-size: 13px; background: var(--blue-50); color: var(--blue-800); border-radius: var(--radius-md); padding: 10px 16px; display: inline-block; font-weight: 500; }
-    .btn-new { background: none; border: 1.5px solid var(--blue-400); color: var(--blue-600); border-radius: var(--radius-md); padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: background 0.15s; margin-top: 1.25rem; }
-    .btn-new:hover { background: var(--blue-50); }
+    .success-card p  { font-size: 14px; color: var(--gray-500); margin-bottom: 1rem; }
+    .protocol-box { background: var(--blue-50); border: 1.5px dashed var(--blue-200); border-radius: var(--radius-md); padding: 1rem 1.5rem; display: inline-block; margin-bottom: 1.5rem; }
+    .protocol-box .proto-label { font-size: 11px; font-weight: 600; color: var(--blue-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .protocol-box .proto-num   { font-size: 22px; font-weight: 700; color: var(--blue-800); letter-spacing: 0.1em; font-family: monospace; }
+    .protocol-box .proto-hint  { font-size: 11px; color: var(--gray-500); margin-top: 4px; }
+    .btn-outline { background: none; border: 1.5px solid var(--blue-400); color: var(--blue-600); border-radius: var(--radius-md); padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: background 0.15s; display: inline-flex; align-items: center; gap: 6px; margin: 4px; }
+    .btn-outline:hover { background: var(--blue-50); }
+    .btn-outline.secondary { border-color: var(--gray-200); color: var(--gray-500); }
+    .btn-outline.secondary:hover { background: var(--gray-50); }
 
-    /* Spinner */
+    /* Track */
+    .track-wrap { padding: 1.75rem 2rem; }
+    .track-wrap h2 { font-size: 15px; font-weight: 500; color: var(--blue-800); margin-bottom: 0.35rem; }
+    .track-wrap .sub { font-size: 13px; color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.5; }
+    .track-search { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+    .track-search input { flex: 1; text-transform: uppercase; letter-spacing: 0.06em; font-family: monospace; font-size: 15px; }
+    .btn-buscar { background: var(--blue-600); color: var(--white); border: none; border-radius: var(--radius-md); padding: 0 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: background 0.15s; height: 44px; }
+    .btn-buscar:hover { background: var(--blue-800); }
+    .btn-buscar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Ticket result card */
+    .ticket-card { border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 10px; background: var(--gray-50); }
+    .tc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 6px; }
+    .tc-id   { font-size: 12px; font-weight: 600; color: var(--gray-500); font-family: monospace; }
+    .tc-prio { font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 999px; }
+    .tc-desc { font-size: 13px; font-weight: 500; color: var(--blue-900); margin-bottom: 0.6rem; line-height: 1.4; }
+    .tc-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+    .tc-time { font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 4px; }
+    .status-badge { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; }
+    .st-aberto    { background: var(--blue-50);  color: var(--blue-700); }
+    .st-andamento { background: #FAEEDA; color: #854F0B; }
+    .st-resolvido { background: #EAF3DE; color: #3B6D11; }
+    .prio-alta    { background: #FAEEDA; color: #633806; }
+    .prio-media   { background: var(--blue-50); color: var(--blue-800); }
+    .prio-baixa   { background: #EAF3DE; color: #3B6D11; }
+
+    /* Timeline toggle */
+    .btn-tl { background: none; border: none; font-size: 12px; color: var(--blue-600); cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 4px; padding: 0; margin-top: 8px; }
+    .ticket-timeline { display: none; margin-top: 10px; border-top: 1px solid var(--gray-200); padding-top: 10px; }
+    .ticket-timeline.open { display: block; }
+    .tl-item { display: flex; gap: 10px; padding-bottom: 10px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: 11px; top: 22px; bottom: 0; width: 1px; background: var(--gray-200); }
+    .tl-item:last-child::before { display: none; }
+    .tl-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tl-dot.aberto    { background: var(--blue-50);  color: var(--blue-600); }
+    .tl-dot.andamento { background: #FAEEDA; color: #BA7517; }
+    .tl-dot.resolvido { background: #EAF3DE; color: #639922; }
+    .tl-dot.default   { background: var(--gray-100); color: var(--gray-500); }
+    .tl-action { font-size: 12px; font-weight: 500; color: var(--gray-700); }
+    .tl-time   { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+
+    /* Empty / loading */
+    .track-msg { text-align: center; padding: 2.5rem 1rem; color: var(--gray-500); }
+    .track-msg i { font-size: 32px; display: block; margin-bottom: 0.5rem; color: var(--gray-300); }
+    .track-msg p { font-size: 13px; }
+
+    /* Spinners */
     .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    .spinner-blue { width: 22px; height: 22px; border: 2px solid var(--blue-100); border-top-color: var(--blue-600); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 0.5rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Step indicator */
-    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2rem 0; }
-    .step { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--gray-300); }
-    .step-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gray-200); color: var(--gray-500); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.2s; flex-shrink: 0; }
-    .step.active .step-dot { background: var(--blue-600); color: white; }
-    .step.active { color: var(--blue-700); }
-    .step.done .step-dot { background: #639922; color: white; }
-    .step-line { flex: 1; height: 1px; background: var(--gray-200); max-width: 40px; }
-
-    footer { margin-top: auto; text-align: center; padding: 1.5rem; font-size: 12px; color: var(--gray-500); }
 
     @media (max-width: 540px) {
       .form-grid { grid-template-columns: 1fr; }
       .form-group.full { grid-column: 1; }
       .hero { padding: 2rem 1rem 3rem; }
       .hero h1 { font-size: 20px; }
-      .tab-panel { padding: 1.25rem; }
-      .preview-grid { grid-template-columns: repeat(3, 1fr); }
+      .panel, .track-wrap { padding: 1.25rem; }
+      .main-tab span { display: none; }
     }
   </style>
 </head>
@@ -123,116 +179,125 @@
 
 <div class="hero">
   <h1>Como podemos te ajudar?</h1>
-  <p>Preencha o formulário abaixo e nossa equipe entrará em contato o mais breve possível.</p>
-</div>
-
-<div class="card-wrap">
-  <div class="card" id="main-card">
-
-    <!-- Step indicator -->
-    <div class="steps" id="steps-bar">
-      <div class="step active" id="step1-ind">
-        <div class="step-dot">1</div>
-        <span>Seus dados</span>
-      </div>
-      <div class="step-line"></div>
-      <div class="step" id="step2-ind">
-        <div class="step-dot">2</div>
-        <span>Anexos</span>
-      </div>
-    </div>
-
-    <!-- Tab nav -->
-    <div class="card-tabs" id="card-tabs">
-      <button class="card-tab active" id="tab-btn-1" onclick="goTab(1)">
-        <i class="ti ti-user"></i> Dados do chamado
-      </button>
-      <button class="card-tab" id="tab-btn-2" onclick="goTab(2)">
-        <i class="ti ti-paperclip"></i> Anexos
-        <span id="attach-count" style="display:none;background:var(--blue-600);color:white;font-size:10px;padding:1px 6px;border-radius:999px;margin-left:2px">0</span>
-      </button>
-    </div>
-
-    <!-- Panel 1: Dados -->
-    <div class="tab-panel active" id="panel-1">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Seu nome *</label>
-          <input type="text" id="f-nome" placeholder="João Silva" />
-          <span class="form-err" id="err-nome">Campo obrigatório</span>
-        </div>
-        <div class="form-group">
-          <label>E-mail *</label>
-          <input type="email" id="f-email" placeholder="joao@empresa.com" />
-          <span class="form-err" id="err-email">E-mail inválido</span>
-        </div>
-        <div class="form-group">
-          <label>Departamento</label>
-          <input type="text" id="f-dept" placeholder="Ex: TI, RH, Financeiro" />
-        </div>
-        <div class="form-group">
-          <label>Prioridade</label>
-          <div class="prio-group">
-            <button class="prio-btn" id="pb-baixa" onclick="setPrio('baixa')"><i class="ti ti-arrow-down"></i>Baixa</button>
-            <button class="prio-btn selected-media" id="pb-media" onclick="setPrio('media')"><i class="ti ti-minus"></i>Média</button>
-            <button class="prio-btn" id="pb-alta" onclick="setPrio('alta')"><i class="ti ti-arrow-up"></i>Alta</button>
-          </div>
-        </div>
-        <div class="form-group full">
-          <label>Descrição do problema *</label>
-          <textarea id="f-desc" placeholder="Descreva o problema com o máximo de detalhes possível..."></textarea>
-          <span class="form-err" id="err-desc">Campo obrigatório</span>
-        </div>
-      </div>
-      <div class="tab-nav">
-        <span style="font-size:12px;color:var(--gray-500)">* Campos obrigatórios</span>
-        <button class="btn-next" onclick="goTab(2)">
-          Próximo <i class="ti ti-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Panel 2: Anexos (em desenvolvimento) -->
-    <div class="tab-panel" id="panel-2">
-      <div class="coming-soon">
-        <div class="coming-icon">
-          <i class="ti ti-crane"></i>
-        </div>
-        <div class="coming-title">Trabalhando na implementação</div>
-        <div class="coming-sub">A funcionalidade de envio de anexos está sendo desenvolvida e em breve estará disponível para você.</div>
-        <div class="coming-badge">
-          <i class="ti ti-tools" style="font-size:13px"></i> Em desenvolvimento
-        </div>
-      </div>
-
-      <div class="tab-nav" style="margin-top:0.5rem">
-        <button class="btn-back" onclick="goTab(1)">
-          <i class="ti ti-arrow-left"></i> Voltar
-        </button>
-        <button class="btn-submit" id="btn-enviar" onclick="submitTicket()">
-          <i class="ti ti-send"></i> Enviar chamado
-        </button>
-      </div>
-    </div>
-
-    <!-- Success -->
-    <div class="success-card" id="success-section">
-      <div class="success-icon"><i class="ti ti-check"></i></div>
-      <h2>Chamado enviado!</h2>
-      <p>Nossa equipe recebeu sua solicitação e entrará em contato em breve.</p>
-      <div class="ticket-num" id="ticket-num-display"></div>
-      <br />
-      <button class="btn-new" onclick="resetForm()">Abrir outro chamado</button>
-    </div>
-
+  <p>Abra um novo chamado ou acompanhe o status de uma solicitação anterior.</p>
+  <div class="main-tabs">
+    <button class="main-tab active" id="mtab-abrir" onclick="setMainTab('abrir')">
+      <i class="ti ti-plus"></i><span>Abrir chamado</span>
+    </button>
+    <button class="main-tab" id="mtab-acompanhar" onclick="setMainTab('acompanhar')">
+      <i class="ti ti-search"></i><span>Acompanhar</span>
+    </button>
   </div>
 </div>
 
-<footer>Central de Suporte &copy; 2025</footer>
+<div class="card-wrap">
+
+  <!-- ══ ABRIR CHAMADO ══ -->
+  <div id="card-abrir">
+    <div class="card">
+      <div class="steps" id="steps-bar">
+        <div class="step active" id="step1-ind"><div class="step-dot">1</div><span>Seus dados</span></div>
+        <div class="step-line"></div>
+        <div class="step" id="step2-ind"><div class="step-dot">2</div><span>Anexos</span></div>
+      </div>
+      <div class="inner-tabs" id="inner-tabs">
+        <button class="inner-tab active" id="tab-btn-1" onclick="goTab(1)"><i class="ti ti-user"></i>Dados do chamado</button>
+        <button class="inner-tab" id="tab-btn-2" onclick="goTab(2)"><i class="ti ti-paperclip"></i>Anexos</button>
+      </div>
+
+      <!-- Painel 1: dados -->
+      <div class="panel active" id="panel-1">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Seu nome *</label>
+            <input type="text" id="f-nome" placeholder="João Silva" />
+            <span class="form-err" id="err-nome">Campo obrigatório</span>
+          </div>
+          <div class="form-group">
+            <label>E-mail *</label>
+            <input type="email" id="f-email" placeholder="joao@empresa.com" />
+            <span class="form-err" id="err-email">E-mail inválido</span>
+          </div>
+          <div class="form-group">
+            <label>Departamento</label>
+            <input type="text" id="f-dept" placeholder="Ex: TI, RH, Financeiro" />
+          </div>
+          <div class="form-group">
+            <label>Prioridade</label>
+            <div class="prio-group">
+              <button class="prio-btn" id="pb-baixa" onclick="setPrio('baixa')"><i class="ti ti-arrow-down"></i>Baixa</button>
+              <button class="prio-btn selected-media" id="pb-media" onclick="setPrio('media')"><i class="ti ti-minus"></i>Média</button>
+              <button class="prio-btn" id="pb-alta" onclick="setPrio('alta')"><i class="ti ti-arrow-up"></i>Alta</button>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Descrição do problema *</label>
+            <textarea id="f-desc" placeholder="Descreva o problema com o máximo de detalhes possível..."></textarea>
+            <span class="form-err" id="err-desc">Campo obrigatório</span>
+          </div>
+        </div>
+        <div class="tab-nav">
+          <span style="font-size:12px;color:var(--gray-500)">* Campos obrigatórios</span>
+          <button class="btn-next" onclick="goTab(2)">Próximo <i class="ti ti-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Painel 2: anexos (em desenvolvimento) -->
+      <div class="panel" id="panel-2">
+        <div class="coming-soon">
+          <div class="coming-icon"><i class="ti ti-crane"></i></div>
+          <div class="coming-title">Trabalhando na implementação</div>
+          <div class="coming-sub">O envio de anexos está sendo desenvolvido e em breve estará disponível.</div>
+          <div class="coming-badge"><i class="ti ti-tools" style="font-size:13px"></i> Em desenvolvimento</div>
+        </div>
+        <div class="tab-nav" style="margin-top:0.5rem">
+          <button class="btn-back" onclick="goTab(1)"><i class="ti ti-arrow-left"></i> Voltar</button>
+          <button class="btn-submit" id="btn-enviar" onclick="submitTicket()"><i class="ti ti-send"></i> Enviar chamado</button>
+        </div>
+      </div>
+
+      <!-- Sucesso -->
+      <div class="success-card" id="success-section">
+        <div class="success-icon"><i class="ti ti-check"></i></div>
+        <h2>Chamado enviado com sucesso!</h2>
+        <p>Guarde o número do protocolo abaixo para acompanhar sua solicitação.</p>
+        <div class="protocol-box">
+          <div class="proto-label">Número do protocolo</div>
+          <div class="proto-num" id="proto-num">—</div>
+          <div class="proto-hint">Use este número para acompanhar seu chamado</div>
+        </div>
+        <br/>
+        <button class="btn-outline" onclick="irAcompanhar()"><i class="ti ti-search"></i> Acompanhar chamado</button>
+        <button class="btn-outline secondary" onclick="resetForm()"><i class="ti ti-plus"></i> Abrir outro chamado</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ACOMPANHAR ══ -->
+  <div id="card-acompanhar" style="display:none">
+    <div class="card">
+      <div class="track-wrap">
+        <h2>Acompanhar minha solicitação</h2>
+        <p class="sub">Digite o número do protocolo recebido ao abrir seu chamado para verificar o status atual.</p>
+        <div class="track-search">
+          <input type="text" id="track-input" placeholder="EX: AB12CD34" maxlength="20"
+            oninput="this.value=this.value.toUpperCase()"
+            onkeydown="if(event.key==='Enter')buscarChamado()" />
+          <button class="btn-buscar" id="btn-buscar" onclick="buscarChamado()">
+            <i class="ti ti-search"></i> Buscar
+          </button>
+        </div>
+        <div id="track-results"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBDS_DeQ47wTFaXzTW8upo4-7L-kmcgdns",
@@ -246,8 +311,24 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
   let prioAtual = 'media';
+  let lastProtocol = '';
 
-  // ── Tab navigation ──
+  // ── Main tabs ──
+  window.setMainTab = function(tab) {
+    document.getElementById('card-abrir').style.display      = tab === 'abrir' ? '' : 'none';
+    document.getElementById('card-acompanhar').style.display = tab === 'acompanhar' ? '' : 'none';
+    document.getElementById('mtab-abrir').classList.toggle('active', tab === 'abrir');
+    document.getElementById('mtab-acompanhar').classList.toggle('active', tab === 'acompanhar');
+    if (tab === 'acompanhar') setTimeout(() => document.getElementById('track-input').focus(), 100);
+  };
+
+  window.irAcompanhar = function() {
+    document.getElementById('track-input').value = lastProtocol;
+    setMainTab('acompanhar');
+    buscarChamado();
+  };
+
+  // ── Inner tabs ──
   window.goTab = function(n) {
     if (n === 2 && !validateStep1()) return;
     [1, 2].forEach(i => {
@@ -262,7 +343,7 @@
   // ── Priority ──
   window.setPrio = function(p) {
     prioAtual = p;
-    ['baixa','media','alta'].forEach(v => {
+    ['baixa', 'media', 'alta'].forEach(v => {
       document.getElementById('pb-' + v).className = 'prio-btn' + (v === p ? ' selected-' + v : '');
     });
   };
@@ -274,7 +355,7 @@
     const email = document.getElementById('f-email');
     const desc  = document.getElementById('f-desc');
     [nome, email, desc].forEach(el => el.classList.remove('err'));
-    ['err-nome','err-email','err-desc'].forEach(id => document.getElementById(id).style.display = 'none');
+    ['err-nome', 'err-email', 'err-desc'].forEach(id => document.getElementById(id).style.display = 'none');
     if (!nome.value.trim())  { nome.classList.add('err');  document.getElementById('err-nome').style.display  = 'block'; ok = false; }
     if (!email.value.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(email.value)) { email.classList.add('err'); document.getElementById('err-email').style.display = 'block'; ok = false; }
     if (!desc.value.trim())  { desc.classList.add('err');  document.getElementById('err-desc').style.display  = 'block'; ok = false; }
@@ -290,7 +371,7 @@
     try {
       const docRef = await addDoc(collection(db, 'tickets'), {
         nome:    document.getElementById('f-nome').value.trim(),
-        email:   document.getElementById('f-email').value.trim(),
+        email:   document.getElementById('f-email').value.trim().toLowerCase(),
         dept:    document.getElementById('f-dept').value.trim() || '—',
         prio:    prioAtual,
         desc:    document.getElementById('f-desc').value.trim(),
@@ -299,9 +380,10 @@
         ts:      serverTimestamp(),
         history: [{ action: 'Chamado aberto', ts: Date.now(), status: 'aberto' }]
       });
-      document.getElementById('ticket-num-display').textContent = 'Protocolo: ' + docRef.id.slice(0,8).toUpperCase();
-      document.getElementById('main-card').querySelector('#steps-bar').style.display = 'none';
-      document.getElementById('card-tabs').style.display = 'none';
+      lastProtocol = docRef.id.slice(0, 8).toUpperCase();
+      document.getElementById('proto-num').textContent = lastProtocol;
+      document.getElementById('steps-bar').style.display  = 'none';
+      document.getElementById('inner-tabs').style.display = 'none';
       document.getElementById('panel-2').classList.remove('active');
       document.getElementById('success-section').style.display = 'block';
     } catch(e) {
@@ -314,16 +396,132 @@
 
   // ── Reset ──
   window.resetForm = function() {
-    ['f-nome','f-email','f-dept','f-desc'].forEach(id => document.getElementById(id).value = '');
+    ['f-nome', 'f-email', 'f-dept', 'f-desc'].forEach(id => document.getElementById(id).value = '');
     window.setPrio('media');
     document.getElementById('success-section').style.display = 'none';
-    document.getElementById('card-tabs').style.display = '';
-    document.getElementById('steps-bar').style.display = '';
+    document.getElementById('inner-tabs').style.display = '';
+    document.getElementById('steps-bar').style.display  = '';
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-send"></i> Enviar chamado';
     window.goTab(1);
     document.getElementById('step1-ind').classList.remove('done');
   };
+
+  // ── Helpers ──
+  function tsMs(ts) {
+    if (!ts) return 0;
+    if (ts.toMillis) return ts.toMillis();
+    if (typeof ts === 'number') return ts;
+    return 0;
+  }
+
+  function fmtDate(ts) {
+    const ms = tsMs(ts);
+    if (!ms) return '—';
+    return new Date(ms).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function timeAgo(ts) {
+    const ms = tsMs(ts);
+    if (!ms) return '—';
+    const d = Math.floor((Date.now() - ms) / 60000);
+    if (d < 1)  return 'agora';
+    if (d < 60) return d + 'min atrás';
+    const h = Math.floor(d / 60);
+    if (h < 24) return h + 'h atrás';
+    return Math.floor(h / 24) + 'd atrás';
+  }
+
+  const PRIO_LABEL = { alta: 'Alta', media: 'Média', baixa: 'Baixa' };
+  const PRIO_CLASS = { alta: 'prio-alta', media: 'prio-media', baixa: 'prio-baixa' };
+  const ST_LABEL   = { aberto: 'Aberto', 'em andamento': 'Em andamento', resolvido: 'Resolvido' };
+  const ST_CLASS   = { aberto: 'st-aberto', 'em andamento': 'st-andamento', resolvido: 'st-resolvido' };
+  const ST_ICON    = { aberto: 'ti-clock', 'em andamento': 'ti-loader', resolvido: 'ti-check' };
+  const TL_CLS     = { aberto: 'aberto', 'em andamento': 'andamento', resolvido: 'resolvido' };
+
+  // ── Buscar por protocolo ──
+  window.buscarChamado = async function() {
+    const val = document.getElementById('track-input').value.trim().toUpperCase();
+    const res = document.getElementById('track-results');
+    const btn = document.getElementById('btn-buscar');
+
+    if (!val) {
+      res.innerHTML = `<div class="track-msg"><i class="ti ti-alert-circle"></i><p>Digite o número do protocolo.</p></div>`;
+      return;
+    }
+    if (val.length < 4) {
+      res.innerHTML = `<div class="track-msg"><i class="ti ti-alert-circle"></i><p>Digite pelo menos 4 caracteres.</p></div>`;
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+    res.innerHTML = `<div class="track-msg"><div class="spinner-blue"></div><p>Buscando...</p></div>`;
+
+    try {
+      const allSnap = await getDocs(collection(db, 'tickets'));
+      const matched = allSnap.docs.filter(d => d.id.toUpperCase().startsWith(val));
+
+      if (matched.length === 0) {
+        res.innerHTML = `<div class="track-msg"><i class="ti ti-inbox"></i><p>Nenhum chamado encontrado com este protocolo.<br><small>Verifique o número e tente novamente.</small></p></div>`;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ti ti-search"></i> Buscar';
+        return;
+      }
+
+      const tickets = matched.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => tsMs(b.ts) - tsMs(a.ts));
+
+      res.innerHTML = tickets.map(t => {
+        const history = t.history || [{ action: 'Chamado aberto', ts: tsMs(t.ts), status: 'aberto' }];
+        const tlHtml  = history.map(h => `
+          <div class="tl-item">
+            <div class="tl-dot ${TL_CLS[h.status] || 'default'}">
+              <i class="ti ${ST_ICON[h.status] || 'ti-point'}" style="font-size:11px"></i>
+            </div>
+            <div>
+              <div class="tl-action">${h.action}</div>
+              <div class="tl-time">${fmtDate(h.ts)}</div>
+            </div>
+          </div>`).join('');
+
+        return `
+          <div class="ticket-card">
+            <div class="tc-header">
+              <span class="tc-id">Protocolo: ${t.id.slice(0,8).toUpperCase()}</span>
+              <span class="tc-prio ${PRIO_CLASS[t.prio] || ''}">${PRIO_LABEL[t.prio] || t.prio}</span>
+            </div>
+            <div class="tc-desc">${t.desc || '—'}</div>
+            <div class="tc-footer">
+              <span class="tc-time"><i class="ti ti-clock" style="font-size:12px"></i> ${timeAgo(t.ts)}</span>
+              <span class="status-badge ${ST_CLASS[t.status] || 'st-aberto'}">
+                <i class="ti ${ST_ICON[t.status] || 'ti-clock'}" style="font-size:12px"></i>
+                ${ST_LABEL[t.status] || t.status}
+              </span>
+            </div>
+            <button class="btn-tl" onclick="toggleTl('tl-${t.id}', this)">
+              <i class="ti ti-chevron-down" style="font-size:13px"></i> Ver histórico
+            </button>
+            <div class="ticket-timeline" id="tl-${t.id}">${tlHtml}</div>
+          </div>`;
+      }).join('');
+
+    } catch(e) {
+      res.innerHTML = `<div class="track-msg"><i class="ti ti-alert-circle"></i><p>Erro ao buscar. Tente novamente.</p></div>`;
+      console.error(e);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-search"></i> Buscar';
+  };
+
+  window.toggleTl = function(id, btn) {
+    const el   = document.getElementById(id);
+    const open = el.classList.toggle('open');
+    btn.innerHTML = open
+      ? '<i class="ti ti-chevron-up" style="font-size:13px"></i> Ocultar histórico'
+      : '<i class="ti ti-chevron-down" style="font-size:13px"></i> Ver histórico';
+  };
 </script>
-
-
 </body>
 </html>
